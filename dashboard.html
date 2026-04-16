@@ -509,7 +509,13 @@
       Object.entries(COURSES).forEach(([key, course]) => {
         const isOwned = owned.has(key)
         const purchase = purchases.find(p => p.course === key)
-        const watched = 0 // placeholder
+        const { data: progressRows } = await sb
+  .from('progress')
+  .select('lesson_id, course')
+  .eq('user_id', user.id)
+
+const manualDone = progressRows?.filter(r => r.course === 'manual').length || 0
+const autoDone   = progressRows?.filter(r => r.course === 'automatic').length || 0
         const pct = isOwned ? Math.round((watched / course.videos) * 100) : 0
 
         if (isOwned) {
