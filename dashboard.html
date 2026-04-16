@@ -461,7 +461,7 @@
       }
     }
 
-    // ── Boot: check auth, load purchases
+ // ── Boot: check auth, load purchases
     async function boot() {
       const { data: { session } } = await sb.auth.getSession()
 
@@ -488,9 +488,18 @@
 
       if (error) console.error('Error loading purchases:', error)
 
+      // Load progress (real data from progress table)
+      const { data: progressRows } = await sb
+        .from('progress')
+        .select('lesson_id, course')
+        .eq('user_id', user.id)
+
+      const manualDone = progressRows?.filter(r => r.course === 'manual').length || 0
+      const autoDone   = progressRows?.filter(r => r.course === 'automatic').length || 0
+
       const owned = new Set((purchases || []).map(p => p.course))
 
-      renderDashboard(owned, purchases || [])
+      renderDashboard(owned, purchases || [], user.id, manualDone, autoDone)
 
       // Hide loading, show page
       document.getElementById('loading-screen').style.display = 'none'
@@ -498,32 +507,25 @@
     }
 
     // ── Render dashboard
-    function renderDashboard(owned, purchases) {
+    function renderDashboard(owned, purchases, userId, manualDone, autoDone) {
       const grid = document.getElementById('courses-grid')
       grid.innerHTML = ''
 
-      let totalVideos = 0
-      let totalWatched = 0 // placeholder — will come from progress table in next phase
+      let totalVideos  = 0
+      let totalWatched = 0
 
-      // Show both courses — owned or locked
       Object.entries(COURSES).forEach(([key, course]) => {
-        const isOwned = owned.has(key)
+        const isOwned  = owned.has(key)
         const purchase = purchases.find(p => p.course === key)
-        const { data: progressRows } = await sb
-  .from('progress')
-  .select('lesson_id, course')
-  .eq('user_id', user.id)
-
-const manualDone = progressRows?.filter(r => r.course === 'manual').length || 0
-const autoDone   = progressRows?.filter(r => r.course === 'automatic').length || 0
-        const pct = isOwned ? Math.round((watched / course.videos) * 100) : 0
+        const watched  = key === 'manual' ? manualDone : autoDone
+        const pct      = isOwned ? Math.round((watched / course.videos) * 100) : 0
 
         if (isOwned) {
           totalVideos  += course.videos
           totalWatched += watched
         }
 
-        grid.innerHTML += renderCourseCard(key, course, isOwned, pct, purchase)
+        grid.innerHTML += renderCourseCard(key, course, isOwned, pct, purchase, userId)
       })
 
       // Overall progress badge
@@ -546,24 +548,23 @@ const autoDone   = progressRows?.filter(r => r.course === 'automatic').length ||
           new Date(a.expires_at) < new Date(b.expires_at) ? a : b)
         if (earliest.expires_at) {
           const d = new Date(earliest.expires_at)
-          document.getElementById('expiry-date').textContent = d.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' })
+          document.getElementById('expiry-date').textContent =
+            d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
           document.getElementById('expiry-bar').style.display = 'flex'
         }
       }
-
-      // Empty state
-      if (owned.size === 0) {
-        // Cards still show as locked — that is the empty state prompt
-      }
     }
 
-    function renderCourseCard(key, course, isOwned, pct, purchase) {
+    function renderCourseCard(key, course, isOwned, pct, purchase, userId) {
       if (isOwned) {
         return `
           <div class="course-card">
             <div class="course-thumb ${course.type}"></div>
             <div class="course-body">
-              <span class="course-type type-${course.type}">${course.type === 'manual' ? '🚗' : '⚡'} ${course.type.charAt(0).toUpperCase() + course.type.slice(1)}</span>
+              <span class="course-type type-${course.type}">
+                ${course.type === 'manual' ? '🚗' : '⚡'}
+                ${course.type.charAt(0).toUpperCase() + course.type.slice(1)}
+              </span>
               <div class="course-name">${course.name}</div>
               <div class="course-car">${course.car}</div>
               <div class="progress-wrap">
@@ -585,6 +586,8 @@ const autoDone   = progressRows?.filter(r => r.course === 'automatic').length ||
             </div>
           </div>`
       } else {
+        // Attach user ID so Stripe webhook knows who paid
+        const stripeUrl = `${course.stripeLink}?client_reference_id=${userId}`
         return `
           <div class="course-card locked">
             <div class="course-thumb ${course.type}" style="opacity:.4"></div>
@@ -596,7 +599,7 @@ const autoDone   = progressRows?.filter(r => r.course === 'automatic').length ||
                 <div class="meta-item"><span>🎬</span><span>${course.videos} videos</span></div>
                 <div class="meta-item"><span>💷</span><span>£39 one-time</span></div>
               </div>
-              <a class="btn-buy" href="${course.stripeLink}?client_reference_id=USER_ID_PLACEHOLDER">
+              <a class="btn-buy" href="${stripeUrl}">
                 🛒 Buy This Course — £39
               </a>
             </div>
@@ -612,21 +615,18 @@ const autoDone   = progressRows?.filter(r => r.course === 'automatic').length ||
       document.getElementById('module-list-title').textContent = course.name
       document.getElementById('module-list-count').textContent = '15 modules'
 
-      // In this phase, modules 1–3 are "unlocked" as a demo; rest locked pending video upload
-      // When course-manual.html is built, this will track real progress
       const rows = document.getElementById('module-rows')
       rows.innerHTML = ''
 
       MODULES.forEach((mod, i) => {
-        // Placeholder: first 3 modules appear unlocked, rest locked until videos added
-        const status = i < 3 ? 'inprogress' : 'locked'
+        const status      = i < 3 ? 'inprogress' : 'locked'
         const statusLabel = status === 'inprogress' ? 'Available' : 'Coming soon'
-        const isLocked = status === 'locked'
+        const isLocked    = status === 'locked'
 
         rows.innerHTML += `
           <div class="module-row ${isLocked ? 'locked-row' : ''}"
                onclick="${!isLocked ? `window.location.href='${course.href}#module-${mod.num}'` : ''}">
-            <div class="mod-num ${status === 'complete' ? 'done' : ''}">${mod.num}</div>
+            <div class="mod-num">${mod.num}</div>
             <div class="mod-title">${mod.title}</div>
             <div class="mod-count">${mod.videos} videos</div>
             <div class="mod-status ${status}">${statusLabel}</div>
