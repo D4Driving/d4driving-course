@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>D4Driving Online Course | Learn Smarter. Pass Sooner.</title>
+  <meta name="description" content="The D4Driving Online Course — 60+ video lessons covering every driving topic, plus local test route guides for Peterborough, Grantham and Kettering. Learn at your own pace. Pass sooner." />
+  <link rel="icon" href="https://d4driving.co.uk/400dpiLogoCropped.png" type="image/png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── TOKENS ─────────────────────────────────────────── */
+    :root {
+      --red:        #BD2026;
+      --red-dark:   #981a1f;
+      --red-light:  #f5e6e6;
+      --slate:      #2C3E50;
+      --slate-mid:  #3d5166;
+      --sage:       #8fa3a0;
+      --sage-light: #e8eeee;
+      --bg:         #fbfdff;
+      --white:      #ffffff;
+      --grey-100:   #f4f6f8;
+      --grey-200:   #e8ecf0;
+      --grey-400:   #9aacb8;
+      --grey-600:   #5a6a76;
+      --text:       #1e2c38;
+      --radius:     14px;
+      --radius-lg:  22px;
+      --shadow-sm:  0 2px 8px rgba(44,62,80,.07);
+      --shadow-md:  0 6px 24px rgba(44,62,80,.11);
+      --shadow-lg:  0 16px 48px rgba(44,62,80,.14);
+      --glass:      rgba(255,255,255,0.72);
+      --glass-border: rgba(255,255,255,0.55);
+    }
+
+    /* ─── RESET ──────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+
+    /* ─── NAV ────────────────────────────────────────────── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      backdrop-filter: blur(16px) saturate(1.4);
+      -webkit-backdrop-filter: blur(16px) saturate(1.4);
+      background: rgba(251,253,255,0.88);
+      border-bottom: 1px solid var(--grey-200);
+      padding: 0 1.5rem;
+      height: 68px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo img { height: 38px; }
+    .nav-links {
+      display: flex; align-items: center; gap: 1.8rem;
+      font-size: .875rem; font-weight: 600; color: var(--slate);
+    }
+    .nav-links a:hover { color: var(--red); }
+    .nav-cta {
+      background: var(--red); color: var(--white);
+      padding: .55rem 1.25rem; border-radius: 8px;
+      font-size: .875rem; font-weight: 700;
+      transition: background .2s;
+    }
+    .nav-cta:hover { background: var(--red-dark); color: var(--white); }
+    .nav-back {
+      font-size: .8rem; color: var(--grey-600);
+      display: flex; align-items: center; gap: .4rem;
+    }
+    .nav-back:hover { color: var(--red); }
+    @media(max-width:768px){
+      .nav-links { display: none; }
+    }
+
+    /* ─── HERO ───────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      padding: 120px 1.5rem 80px;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+      background:
+        radial-gradient(ellipse 70% 60% at 80% 20%, rgba(189,32,38,.08) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 50% at 10% 80%, rgba(143,163,160,.12) 0%, transparent 60%),
+        var(--bg);
+    }
+    .hero-inner {
+      max-width: 900px; width: 100%; text-align: center;
+      display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: var(--red-light); color: var(--red);
+      padding: .4rem 1rem; border-radius: 100px;
+      font-size: .8rem; font-weight: 700; letter-spacing: .03em;
+      border: 1px solid rgba(189,32,38,.18);
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.6rem);
+      font-weight: 800; line-height: 1.15;
+      color: var(--slate);
+    }
+    .hero h1 span { color: var(--red); }
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--grey-600); max-width: 620px; line-height: 1.7;
+    }
+    .hero-cards {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1rem; width: 100%; max-width: 680px; margin-top: .5rem;
+    }
+    .hero-card {
+      background: var(--glass);
+      border: 1.5px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      backdrop-filter: blur(12px);
+      padding: 1.75rem 1.5rem 1.5rem;
+      box-shadow: var(--shadow-md);
+      display: flex; flex-direction: column; align-items: center; gap: .75rem;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .hero-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .hero-card-badge {
+      font-size: .72rem; font-weight: 700; letter-spacing: .06em;
+      text-transform: uppercase; padding: .3rem .75rem;
+      border-radius: 100px;
+    }
+    .badge-manual { background: var(--slate); color: var(--white); }
+    .badge-auto   { background: var(--sage);  color: var(--white); }
+    .hero-card-name {
+      font-size: 1.05rem; font-weight: 700; color: var(--slate);
+    }
+    .hero-card-car { font-size: .82rem; color: var(--grey-600); }
+    .hero-card-price {
+      display: flex; align-items: baseline; gap: .4rem;
+    }
+    .price-now { font-size: 2rem; font-weight: 800; color: var(--red); }
+    .price-was {
+      font-size: .95rem; color: var(--grey-400);
+      text-decoration: line-through;
+    }
+    .hero-card-meta { font-size: .8rem; color: var(--grey-600); }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: .4rem;
+      padding: .7rem 1.5rem; border-radius: 10px;
+      font-size: .9rem; font-weight: 700; cursor: pointer;
+      border: none; transition: background .2s, transform .15s, box-shadow .2s;
+      width: 100%;
+    }
+    .btn-red {
+      background: var(--red); color: var(--white);
+      box-shadow: 0 4px 14px rgba(189,32,38,.3);
+    }
+    .btn-red:hover { background: var(--red-dark); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(189,32,38,.38); }
+    .btn-outline {
+      background: transparent; color: var(--red);
+      border: 2px solid var(--red);
+    }
+    .btn-outline:hover { background: var(--red-light); }
+    .hero-trust {
+      display: flex; align-items: center; gap: 1.5rem;
+      flex-wrap: wrap; justify-content: center;
+      font-size: .82rem; color: var(--grey-600);
+    }
+    .hero-trust-item { display: flex; align-items: center; gap: .35rem; }
+    .hero-trust-item span:first-child { font-size: 1rem; }
+    @media(max-width:520px){
+      .hero-cards { grid-template-columns: 1fr; max-width: 340px; }
+    }
+
+    /* ─── SECTIONS ───────────────────────────────────────── */
+    section { padding: 80px 1.5rem; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      display: inline-block;
+      font-size: .75rem; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--red);
+      margin-bottom: .75rem;
+    }
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 800; color: var(--slate); line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+    .section-sub {
+      font-size: 1rem; color: var(--grey-600);
+      max-width: 560px; line-height: 1.7;
+    }
+
+    /* ─── PAIN ───────────────────────────────────────────── */
+    .pain { background: var(--slate); }
+    .pain .section-label { color: var(--sage); }
+    .pain .section-title { color: var(--white); }
+    .pain-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem; margin-top: 2.5rem;
+    }
+    .pain-card {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: var(--radius); padding: 1.5rem;
+      color: rgba(255,255,255,.85);
+      font-size: .92rem; line-height: 1.6;
+    }
+    .pain-card-icon { font-size: 1.5rem; margin-bottom: .75rem; }
+    .pain-solution {
+      margin-top: 2.5rem;
+      background: rgba(189,32,38,.2);
+      border: 1px solid rgba(189,32,38,.3);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      color: var(--white);
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.7;
+      text-align: center;
+    }
+    .pain-solution strong { color: #ff8080; }
+
+    /* ─── FEATURES ───────────────────────────────────────── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem; margin-top: 2.5rem;
+    }
+    .feature-card {
+      background: var(--white);
+      border: 1.5px solid var(--grey-200);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .feature-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .feature-icon { font-size: 1.8rem; margin-bottom: .75rem; }
+    .feature-title { font-size: .95rem; font-weight: 700; color: var(--slate); margin-bottom: .4rem; }
+    .feature-desc { font-size: .84rem; color: var(--grey-600); line-height: 1.55; }
+
+    /* ─── MODULES ────────────────────────────────────────── */
+    .modules { background: var(--grey-100); }
+    .module-tabs {
+      display: flex; gap: .5rem; margin: 2rem 0 1.5rem;
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      padding: .55rem 1.25rem; border-radius: 8px;
+      font-size: .85rem; font-weight: 700;
+      cursor: pointer; border: 2px solid var(--grey-200);
+      background: var(--white); color: var(--grey-600);
+      transition: all .2s;
+    }
+    .tab-btn.active { background: var(--red); border-color: var(--red); color: var(--white); }
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+    .module-card {
+      background: var(--white);
+      border: 1.5px solid var(--grey-200);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .module-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .module-header {
+      background: var(--slate); color: var(--white);
+      padding: .85rem 1.2rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .module-number { font-size: .72rem; font-weight: 700; letter-spacing: .08em; opacity: .7; }
+    .module-title { font-size: .95rem; font-weight: 700; }
+    .module-count {
+      background: var(--red); color: var(--white);
+      font-size: .72rem; font-weight: 700;
+      padding: .2rem .6rem; border-radius: 100px;
+      white-space: nowrap;
+    }
+    .module-lessons { padding: 1rem 1.2rem; }
+    .lesson-item {
+      display: flex; align-items: flex-start; gap: .6rem;
+      padding: .5rem 0;
+      border-bottom: 1px solid var(--grey-100);
+      font-size: .84rem; color: var(--grey-600);
+    }
+    .lesson-item:last-child { border-bottom: none; }
+    .lesson-num {
+      min-width: 22px; height: 22px;
+      background: var(--grey-100); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .7rem; font-weight: 700; color: var(--grey-600);
+      margin-top: .05rem;
+    }
+    .lesson-lock { color: var(--grey-400); font-size: .8rem; margin-left: auto; padding-top: .1rem; }
+    .module-local .module-header { background: var(--red); }
+    .module-local .module-count { background: var(--white); color: var(--red); }
+
+    /* ─── LOCAL ──────────────────────────────────────────── */
+    .local {
+      background:
+        radial-gradient(ellipse 60% 60% at 90% 50%, rgba(189,32,38,.07) 0%, transparent 70%),
+        var(--bg);
+    }
+    .local-grid {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem; margin-top: 2rem;
+    }
+    .local-card {
+      background: var(--white);
+      border: 1.5px solid var(--grey-200);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem 1.5rem;
+      box-shadow: var(--shadow-sm);
+      transition: transform .2s, box-shadow .2s;
+      position: relative; overflow: hidden;
+    }
+    .local-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: var(--red);
+    }
+    .local-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .local-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .local-name { font-size: 1.15rem; font-weight: 800; color: var(--slate); margin-bottom: .4rem; }
+    .local-address { font-size: .8rem; color: var(--grey-400); margin-bottom: 1rem; }
+    .local-features { display: flex; flex-direction: column; gap: .4rem; }
+    .local-feature {
+      display: flex; align-items: flex-start; gap: .5rem;
+      font-size: .83rem; color: var(--grey-600); line-height: 1.5;
+    }
+    .local-feature::before { content: '✓'; color: var(--red); font-weight: 700; margin-top: .05rem; }
+    @media(max-width:700px){ .local-grid { grid-template-columns: 1fr; } }
+
+    /* ─── STATS ──────────────────────────────────────────── */
+    .stats { background: var(--slate); padding: 60px 1.5rem; }
+    .stats-grid {
+      max-width: 900px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 1rem; text-align: center;
+    }
+    .stat-value {
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 800; color: var(--white);
+      line-height: 1;
+    }
+    .stat-label { font-size: .82rem; color: var(--sage); margin-top: .4rem; }
+    @media(max-width:600px){ .stats-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; } }
+
+    /* ─── TESTIMONIALS ───────────────────────────────────── */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem; margin-top: 2.5rem;
+    }
+    .testimonial {
+      background: var(--white);
+      border: 1.5px solid var(--grey-200);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+      display: flex; flex-direction: column; gap: .75rem;
+    }
+    .t-stars { color: #f59e0b; font-size: 1rem; letter-spacing: .1em; }
+    .t-quote { font-size: .9rem; color: var(--grey-600); line-height: 1.65; font-style: italic; }
+    .t-author { display: flex; align-items: center; gap: .75rem; margin-top: auto; }
+    .t-avatar {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: var(--red-light); color: var(--red);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: .85rem;
+    }
+    .t-name { font-size: .85rem; font-weight: 700; color: var(--slate); }
+    .t-location { font-size: .76rem; color: var(--grey-400); }
+
+    /* ─── PRICING ────────────────────────────────────────── */
+    .pricing { background: var(--grey-100); }
+    .pricing-grid {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.25rem; margin-top: 2.5rem; align-items: start;
+    }
+    .pricing-card {
+      background: var(--white);
+      border: 1.5px solid var(--grey-200);
+      border-radius: var(--radius-lg);
+      padding: 2rem 1.75rem;
+      box-shadow: var(--shadow-sm);
+      transition: transform .2s, box-shadow .2s;
+      position: relative;
+    }
+    .pricing-card.featured {
+      border-color: var(--red);
+      box-shadow: 0 0 0 3px rgba(189,32,38,.1), var(--shadow-md);
+      transform: scale(1.02);
+    }
+    .pricing-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .pricing-card.featured:hover { transform: scale(1.02) translateY(-4px); }
+    .popular-badge {
+      position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+      background: var(--red); color: var(--white);
+      font-size: .72rem; font-weight: 700; letter-spacing: .06em;
+      padding: .3rem .9rem; border-radius: 100px;
+      white-space: nowrap;
+    }
+    .pricing-name { font-size: 1rem; font-weight: 700; color: var(--slate); margin-bottom: .5rem; }
+    .pricing-car { font-size: .8rem; color: var(--grey-400); margin-bottom: 1.5rem; }
+    .pricing-price {
+      display: flex; align-items: baseline; gap: .5rem;
+      margin-bottom: .3rem;
+    }
+    .price-big { font-size: 2.8rem; font-weight: 800; color: var(--red); line-height: 1; }
+    .price-old { font-size: 1rem; color: var(--grey-400); text-decoration: line-through; }
+    .pricing-period { font-size: .8rem; color: var(--grey-600); margin-bottom: 1.5rem; }
+    .pricing-features { display: flex; flex-direction: column; gap: .65rem; margin-bottom: 1.75rem; }
+    .pf-item {
+      display: flex; align-items: flex-start; gap: .6rem;
+      font-size: .86rem; color: var(--grey-600); line-height: 1.5;
+    }
+    .pf-check { color: var(--red); font-weight: 700; margin-top: .05rem; }
+    .pricing-note { font-size: .76rem; color: var(--grey-400); text-align: center; margin-top: .75rem; }
+    .pricing-discount {
+      background: var(--sage-light);
+      border: 1.5px solid var(--sage);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      margin-top: 1.5rem;
+      display: flex; align-items: center; gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .discount-icon { font-size: 1.8rem; }
+    .discount-text strong { font-size: .95rem; color: var(--slate); display: block; margin-bottom: .2rem; }
+    .discount-text span { font-size: .83rem; color: var(--grey-600); }
+    .discount-code {
+      margin-left: auto;
+      background: var(--white); border: 2px dashed var(--sage);
+      border-radius: 8px; padding: .5rem 1rem;
+      font-size: .9rem; font-weight: 800; color: var(--slate);
+      letter-spacing: .08em;
+    }
+    @media(max-width:750px){
+      .pricing-grid { grid-template-columns: 1fr; max-width: 400px; }
+      .pricing-card.featured { transform: scale(1); }
+    }
+
+    /* ─── FAQ ────────────────────────────────────────────── */
+    .faq-list { margin-top: 2.5rem; display: flex; flex-direction: column; gap: .75rem; max-width: 780px; }
+    .faq-item {
+      background: var(--white);
+      border: 1.5px solid var(--grey-200);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .faq-q {
+      padding: 1.1rem 1.4rem;
+      font-size: .95rem; font-weight: 700; color: var(--slate);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      user-select: none;
+    }
+    .faq-q::after { content: '+'; font-size: 1.2rem; color: var(--red); transition: transform .2s; flex-shrink: 0; }
+    .faq-item.open .faq-q::after { transform: rotate(45deg); }
+    .faq-a {
+      max-height: 0; overflow: hidden;
+      font-size: .88rem; color: var(--grey-600); line-height: 1.7;
+      padding: 0 1.4rem; transition: max-height .3s ease, padding .3s;
+    }
+    .faq-item.open .faq-a { max-height: 300px; padding: 0 1.4rem 1.2rem; }
+
+    /* ─── ROBERT ─────────────────────────────────────────── */
+    .robert { background: var(--slate); }
+    .robert-inner {
+      max-width: 900px; margin: 0 auto;
+      display: grid; grid-template-columns: auto 1fr; gap: 3rem; align-items: center;
+    }
+    .robert-img {
+      width: 160px; height: 160px; border-radius: 50%;
+      border: 4px solid var(--red);
+      object-fit: cover; flex-shrink: 0;
+    }
+    .robert-label { color: var(--sage); font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: .75rem; }
+    .robert-name { font-size: 1.6rem; font-weight: 800; color: var(--white); margin-bottom: .75rem; }
+    .robert-bio { font-size: .9rem; color: rgba(255,255,255,.75); line-height: 1.75; margin-bottom: 1.25rem; }
+    .robert-creds { display: flex; flex-wrap: wrap; gap: .5rem; }
+    .cred-chip {
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.15);
+      color: rgba(255,255,255,.85);
+      font-size: .78rem; font-weight: 600;
+      padding: .35rem .8rem; border-radius: 100px;
+    }
+    @media(max-width:600px){
+      .robert-inner { grid-template-columns: 1fr; text-align: center; }
+      .robert-img { margin: 0 auto; }
+      .robert-creds { justify-content: center; }
+    }
+
+    /* ─── CTA BANNER ─────────────────────────────────────── */
+    .cta-banner {
+      background: var(--red);
+      padding: 70px 1.5rem;
+      text-align: center;
+    }
+    .cta-banner h2 {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 800; color: var(--white); margin-bottom: .75rem;
+    }
+    .cta-banner p { font-size: 1rem; color: rgba(255,255,255,.8); margin-bottom: 2rem; }
+    .cta-btns { display: flex; gap: .75rem; justify-content: center; flex-wrap: wrap; }
+    .btn-white {
+      background: var(--white); color: var(--red);
+      padding: .8rem 2rem; border-radius: 10px;
+      font-size: .95rem; font-weight: 800;
+      box-shadow: 0 4px 14px rgba(0,0,0,.15);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.2); }
+    .btn-ghost {
+      background: transparent; color: var(--white);
+      border: 2px solid rgba(255,255,255,.5);
+      padding: .8rem 2rem; border-radius: 10px;
+      font-size: .95rem; font-weight: 700;
+      transition: border-color .2s, background .2s;
+    }
+    .btn-ghost:hover { border-color: var(--white); background: rgba(255,255,255,.1); }
+
+    /* ─── FOOTER ─────────────────────────────────────────── */
+    .footer {
+      background: var(--slate); border-top: 1px solid rgba(255,255,255,.08);
+      padding: 3rem 1.5rem 2rem;
+      color: rgba(255,255,255,.7);
+    }
+    .footer-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 2rem;
+    }
+    .footer-logo img { height: 36px; margin-bottom: 1rem; filter: brightness(0) invert(1); }
+    .footer-tagline { font-size: .84rem; line-height: 1.65; }
+    .footer-social { display: flex; gap: .75rem; margin-top: 1rem; }
+    .social-link {
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,.1);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .9rem; transition: background .2s;
+    }
+    .social-link:hover { background: var(--red); }
+    .footer-heading { font-size: .78rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--sage); margin-bottom: .75rem; }
+    .footer-links { display: flex; flex-direction: column; gap: .5rem; }
+    .footer-links a { font-size: .84rem; transition: color .15s; }
+    .footer-links a:hover { color: var(--white); }
+    .footer-bottom {
+      max-width: 1100px; margin: 2rem auto 0;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,.1);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: .75rem;
+      font-size: .78rem;
+    }
+    @media(max-width:768px){
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+    }
+    @media(max-width:440px){
+      .footer-inner { grid-template-columns: 1fr; }
+    }
+
+    /* ─── ANIMATIONS ─────────────────────────────────────── */
+    .reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity .55s ease, transform .55s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: .1s; }
+    .reveal-delay-2 { transition-delay: .2s; }
+    .reveal-delay-3 { transition-delay: .3s; }
+
+    /* ─── COURSE TOGGLE PANEL ────────────────────────────── */
+    .panel { display: none; }
+    .panel.active { display: grid; }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ──────────────────────────────────────────────── -->
+  <nav class="nav">
+    <a class="nav-logo" href="#hero">
+      <img src="https://d4driving.co.uk/400dpiLogoCropped.png" alt="D4Driving" />
+    </a>
+    <div class="nav-links">
+      <a href="#modules">Modules</a>
+      <a href="#local">Test Routes</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQs</a>
+      <a href="#pricing" class="nav-cta">Get Access</a>
+    </div>
+    <a class="nav-back" href="https://www.d4driving.co.uk">← d4driving.co.uk</a>
+  </nav>
+
+  <!-- ── HERO ─────────────────────────────────────────────── -->
+  <section class="hero" id="hero">
+    <div class="hero-inner">
+      <div class="hero-badge reveal">🎓 D4Driving Online Course — Now Live</div>
+      <h1 class="reveal reveal-delay-1">
+        Learn Smarter.<br/><span>Pass Sooner.</span>
+      </h1>
+      <p class="hero-sub reveal reveal-delay-2">
+        60+ video lessons covering every driving topic — filmed right here in Peterborough.
+        Includes exclusive local test route guides for Peterborough, Grantham &amp; Kettering.
+      </p>
+
+      <div class="hero-cards reveal reveal-delay-3">
+        <div class="hero-card">
+          <span class="hero-card-badge badge-manual">Manual</span>
+          <div class="hero-card-name">Manual Course</div>
+          <div class="hero-card-car">Toyota Aygo X</div>
+          <div class="hero-card-price">
+            <span class="price-now">£39</span>
+            <span class="price-was">£59</span>
+          </div>
+          <div class="hero-card-meta">66 videos · 12 months access</div>
+          <a class="btn btn-red" href="#pricing">Get Instant Access →</a>
+        </div>
+        <div class="hero-card">
+          <span class="hero-card-badge badge-auto">Automatic</span>
+          <div class="hero-card-name">Automatic Course</div>
+          <div class="hero-card-car">Toyota Yaris Cross</div>
+          <div class="hero-card-price">
+            <span class="price-now">£39</span>
+            <span class="price-was">£59</span>
+          </div>
+          <div class="hero-card-meta">62 videos · 12 months access</div>
+          <a class="btn btn-outline" href="#pricing">Get Instant Access →</a>
+        </div>
+      </div>
+
+      <div class="hero-trust reveal">
+        <div class="hero-trust-item"><span>✅</span><span>One-time payment</span></div>
+        <div class="hero-trust-item"><span>📱</span><span>Watch on any device</span></div>
+        <div class="hero-trust-item"><span>🗺️</span><span>Local test routes included</span></div>
+        <div class="hero-trust-item"><span>🎓</span><span>DVSA-approved instructor</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── STATS ─────────────────────────────────────────────── -->
+  <div class="stats">
+    <div class="stats-grid">
+      <div class="reveal"><div class="stat-value">10k+</div><div class="stat-label">YouTube Subscribers</div></div>
+      <div class="reveal reveal-delay-1"><div class="stat-value">420+</div><div class="stat-label">Local Passes</div></div>
+      <div class="reveal reveal-delay-2"><div class="stat-value">7+</div><div class="stat-label">Years Teaching</div></div>
+      <div class="reveal reveal-delay-3"><div class="stat-value">3</div><div class="stat-label">Test Centres Covered</div></div>
+    </div>
+  </div>
+
+  <!-- ── PAIN ──────────────────────────────────────────────── -->
+  <section class="pain">
+    <div class="section-inner">
+      <span class="section-label">Sound Familiar?</span>
+      <h2 class="section-title" style="color:var(--white)">Why lessons feel slow — and how to fix it</h2>
+      <div class="pain-grid">
+        <div class="pain-card reveal">
+          <div class="pain-card-icon">😕</div>
+          <strong style="display:block;margin-bottom:.4rem;color:var(--white)">Parked up in lessons</strong>
+          Too much time listening to explanations instead of actually driving.
+        </div>
+        <div class="pain-card reveal reveal-delay-1">
+          <div class="pain-card-icon">🔄</div>
+          <strong style="display:block;margin-bottom:.4rem;color:var(--white)">Repeating the same mistakes</strong>
+          Not understanding why something went wrong makes it hard to fix.
+        </div>
+        <div class="pain-card reveal reveal-delay-2">
+          <div class="pain-card-icon">💸</div>
+          <strong style="display:block;margin-bottom:.4rem;color:var(--white)">Paying for more lessons</strong>
+          Every extra lesson adds up — especially if you don't feel ready for your test.
+        </div>
+        <div class="pain-card reveal reveal-delay-3">
+          <div class="pain-card-icon">😰</div>
+          <strong style="display:block;margin-bottom:.4rem;color:var(--white)">Nervous on test day</strong>
+          Walking into the test centre not knowing what to expect adds unnecessary pressure.
+        </div>
+      </div>
+      <div class="pain-solution reveal">
+        You haven't failed — you've just not been given the knowledge <strong>before</strong> getting in the car.<br/>
+        The D4Driving Online Course fixes that.
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FEATURES ──────────────────────────────────────────── -->
+  <section id="features">
+    <div class="section-inner">
+      <span class="section-label reveal">What You Get</span>
+      <h2 class="section-title reveal">Everything in one place</h2>
+      <div class="features-grid">
+        <div class="feature-card reveal">
+          <div class="feature-icon">🎬</div>
+          <div class="feature-title">Bite-sized video lessons</div>
+          <div class="feature-desc">3–6 minutes each. Watch on your phone between lessons — no long lectures.</div>
+        </div>
+        <div class="feature-card reveal reveal-delay-1">
+          <div class="feature-icon">🗺️</div>
+          <div class="feature-title">Local test route guides</div>
+          <div class="feature-desc">Exclusive video walkthroughs of Peterborough, Grantham &amp; Kettering routes. No other course offers this.</div>
+        </div>
+        <div class="feature-card reveal reveal-delay-2">
+          <div class="feature-icon">📋</div>
+          <div class="feature-title">Every topic covered</div>
+          <div class="feature-desc">Junctions, roundabouts, manoeuvres, dual carriageways, independent driving and more.</div>
+        </div>
+        <div class="feature-card reveal reveal-delay-3">
+          <div class="feature-icon">📱</div>
+          <div class="feature-title">Watch on any device</div>
+          <div class="feature-desc">Phone, tablet or laptop. Pick up where you left off — your progress is saved.</div>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">🎓</div>
+          <div class="feature-title">Free theory bundle</div>
+          <div class="feature-desc">700+ theory questions, 30+ hazard perception clips and 100+ road sign flashcards included free.</div>
+        </div>
+        <div class="feature-card reveal reveal-delay-1">
+          <div class="feature-icon">🚗</div>
+          <div class="feature-title">Filmed in your lesson car</div>
+          <div class="feature-desc">Manual in the Toyota Aygo X, automatic in the Toyota Yaris Cross — exactly what you'll drive.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── MODULES ────────────────────────────────────────────── -->
+  <section class="modules" id="modules">
+    <div class="section-inner">
+      <span class="section-label reveal">Course Content</span>
+      <h2 class="section-title reveal">15 modules. Every topic. Zero gaps.</h2>
+      <p class="section-sub reveal">Select your course type to see what's included.</p>
+
+      <div class="module-tabs reveal">
+        <button class="tab-btn active" onclick="switchTab('manual', this)">Manual Course (66 videos)</button>
+        <button class="tab-btn" onclick="switchTab('auto', this)">Automatic Course (62 videos)</button>
+      </div>
+
+      <div id="panel-manual" class="panel active modules-grid">
+        <div class="module-card reveal">
+          <div class="module-header"><div><div class="module-number">MODULE 1</div><div class="module-title">Before You Get Moving</div></div><span class="module-count">5 videos</span></div>
+          <div class="module-lessons">
+            <div class="lesson-item"><span class="lesson-num">1</span>The cockpit drill (DSSSM)<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">2</span>Controls overview<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">3</span>Show me / Tell me — bonnet<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">4</span>Show me / Tell me — in-car<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">5</span>Eyesight check &amp; test day prep<span class="lesson-lock">🔒</span></div>
+          </div>
+        </div>
+        <div class="module-card reveal reveal-delay-1">
+          <div class="module-header"><div><div class="module-number">MODULE 2</div><div class="module-title">First Moves</div></div><span class="module-count">6 videos</span></div>
+          <div class="module-lessons">
+            <div class="lesson-item"><span class="lesson-num">6</span>Moving off on a flat road<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">7</span>Stopping safely<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">8</span>Steering technique<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">9</span>Moving off at an angle<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">10</span>Hill starts — up &amp; downhill<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">11</span>Clutch control — biting point<span class="lesson-lock">🔒</span></div>
+          </div>
+        </div>
+        <div class="module-card reveal reveal-delay-2">
+          <div class="module-header"><div><div class="module-number">MODULE 3</div><div class="module-title">Gears &amp; Speed Control</div></div><span class="module-count">5 videos</span></div>
+          <div class="module-lessons">
+            <div class="lesson-item"><span class="lesson-num">12</span>Clutch control in depth<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">13</span>Changing up through the gears<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">14</span>Changing down gears<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">15</span>Block gear changes<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">16</span>Acceleration sense<span class="lesson-lock">🔒</span></div>
+          </div>
+        </div>
+        <div class="module-card reveal">
+          <div class="module-header"><div><div class="module-number">MODULES 4–6</div><div class="module-title">MSM · Junctions · Roundabouts</div></div><span class="module-count">15 videos</span></div>
+          <div class="module-lessons">
+            <div class="lesson-item"><span class="lesson-num">✓</span>Mirror-Signal-Manoeuvre routine<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">✓</span>Road positioning<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">✓</span>Left &amp; right turns at junctions<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">✓</span>T-junctions &amp; crossroads<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">✓</span>Mini &amp; multi-lane roundabouts<span class="lesson-lock">🔒</span></div>
+          </div>
+        </div>
+        <div class="module-card reveal reveal-delay-1">
+          <div class="module-header"><div><div class="module-number">MODULES 7–10</div><div class="module-title">Town · Dual Carriage · Rural · Crossings</div></div><span class="module-count">14 videos</span></div>
+          <div class="module-lessons">
+            <div class="lesson-item"><span class="lesson-num">✓</span>Town driving &amp; one-way streets<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">✓</span>Joining &amp; leaving dual carriageways<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">✓</span>Country roads &amp; rural hazards<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">✓</span>Zebra, pelican, puffin, toucan crossings<span class="lesson-lock">🔒</span></div>
+          </div>
+        </div>
+        <div class="module-card reveal reveal-delay-2">
+          <div class="module-header"><div><div class="module-number">MODULES 11–13</div><div class="module-title">Manoeuvres · Emergency · Independent</div></div><span class="module-count">10 videos</span></div>
+          <div class="module-lessons">
+            <div class="lesson-item"><span class="lesson-num">✓</span>Parallel parking step by step<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">✓</span>Forward &amp; reverse bay parking<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">✓</span>Pull up on right &amp; reverse<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">✓</span>Emergency stop technique<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">✓</span>Following sat nav &amp; road signs<span class="lesson-lock">🔒</span></div>
+          </div>
+        </div>
+        <div class="module-card module-local reveal">
+          <div class="module-header"><div><div class="module-number">MODULE 14</div><div class="module-title">🗺️ Local Test Routes</div></div><span class="module-count">6 videos</span></div>
+          <div class="module-lessons">
+            <div class="lesson-item"><span class="lesson-num">✓</span>Peterborough — routes &amp; tricky spots<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">✓</span>Peterborough — top faults &amp; how to avoid them<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">✓</span>Grantham — layout &amp; route overview<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">✓</span>Grantham — top faults<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">✓</span>Kettering — layout &amp; route overview<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">✓</span>Kettering — top faults<span class="lesson-lock">🔒</span></div>
+          </div>
+        </div>
+        <div class="module-card reveal reveal-delay-1">
+          <div class="module-header"><div><div class="module-number">MODULE 15</div><div class="module-title">Your Driving Test</div></div><span class="module-count">5 videos</span></div>
+          <div class="module-lessons">
+            <div class="lesson-item"><span class="lesson-num">✓</span>What happens on test day<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">✓</span>How faults are marked<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">✓</span>Top 10 reasons learners fail<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">✓</span>Managing test nerves<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">✓</span>After your test — pass or fail<span class="lesson-lock">🔒</span></div>
+          </div>
+        </div>
+      </div><!-- /panel-manual -->
+
+      <div id="panel-auto" class="panel modules-grid" style="display:none">
+        <div class="module-card reveal">
+          <div class="module-header"><div><div class="module-number">MODULE 1</div><div class="module-title">Before You Get Moving</div></div><span class="module-count">5 videos</span></div>
+          <div class="module-lessons">
+            <div class="lesson-item"><span class="lesson-num">1</span>The cockpit drill<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">2</span>Controls overview — Yaris Cross<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">3</span>Show me / Tell me — bonnet<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">4</span>Show me / Tell me — in-car<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">5</span>Eyesight check &amp; test day prep<span class="lesson-lock">🔒</span></div>
+          </div>
+        </div>
+        <div class="module-card reveal reveal-delay-1">
+          <div class="module-header"><div><div class="module-number">MODULE 2</div><div class="module-title">First Moves</div></div><span class="module-count">5 videos</span></div>
+          <div class="module-lessons">
+            <div class="lesson-item"><span class="lesson-num">6</span>Moving off on a flat road<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">7</span>Stopping safely<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">8</span>Steering technique<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">9</span>Moving off at an angle<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">10</span>Hill starts — up &amp; downhill<span class="lesson-lock">🔒</span></div>
+          </div>
+        </div>
+        <div class="module-card reveal reveal-delay-2">
+          <div class="module-header"><div><div class="module-number">MODULE 3</div><div class="module-title">Gears &amp; Speed Control</div></div><span class="module-count">2 videos</span></div>
+          <div class="module-lessons">
+            <div class="lesson-item"><span class="lesson-num">11</span>The gear selector — P/R/N/D/L explained<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">12</span>Creep control &amp; smooth acceleration<span class="lesson-lock">🔒</span></div>
+          </div>
+        </div>
+        <div class="module-card reveal">
+          <div class="module-header"><div><div class="module-number">MODULES 4–13</div><div class="module-title">MSM through to Independent Driving</div></div><span class="module-count">44 videos</span></div>
+          <div class="module-lessons">
+            <div class="lesson-item"><span class="lesson-num">✓</span>Same full content as manual course<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">✓</span>Filmed in the Toyota Yaris Cross<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">✓</span>Automatic-specific tips throughout<span class="lesson-lock">🔒</span></div>
+          </div>
+        </div>
+        <div class="module-card module-local reveal reveal-delay-1">
+          <div class="module-header"><div><div class="module-number">MODULE 14</div><div class="module-title">🗺️ Local Test Routes</div></div><span class="module-count">6 videos</span></div>
+          <div class="module-lessons">
+            <div class="lesson-item"><span class="lesson-num">✓</span>Peterborough — routes &amp; tricky spots<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">✓</span>Peterborough — top faults<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">✓</span>Grantham — layout &amp; route overview<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">✓</span>Grantham — top faults<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">✓</span>Kettering — layout &amp; route overview<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">✓</span>Kettering — top faults<span class="lesson-lock">🔒</span></div>
+          </div>
+        </div>
+        <div class="module-card reveal reveal-delay-2">
+          <div class="module-header"><div><div class="module-number">MODULE 15</div><div class="module-title">Your Driving Test</div></div><span class="module-count">5 videos</span></div>
+          <div class="module-lessons">
+            <div class="lesson-item"><span class="lesson-num">✓</span>What happens on test day<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">✓</span>How faults are marked<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">✓</span>Top 10 reasons learners fail<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">✓</span>Managing test nerves<span class="lesson-lock">🔒</span></div>
+            <div class="lesson-item"><span class="lesson-num">✓</span>After your test — pass or fail<span class="lesson-lock">🔒</span></div>
+          </div>
+        </div>
+      </div><!-- /panel-auto -->
+    </div>
+  </section>
+
+  <!-- ── LOCAL ──────────────────────────────────────────────── -->
+  <section class="local" id="local">
+    <div class="section-inner">
+      <span class="section-label reveal">Only Available Here</span>
+      <h2 class="section-title reveal">Local test routes — your secret weapon</h2>
+      <p class="section-sub reveal">No national course offers this. Robert drives these routes every week. You'll know exactly what's coming.</p>
+      <div class="local-grid">
+        <div class="local-card reveal">
+          <div class="local-icon">🏁</div>
+          <div class="local-name">Peterborough</div>
+          <div class="local-address">Second Drove, Fengate PE1 5XA</div>
+          <div class="local-features">
+            <div class="local-feature">Eye Roundabout approach &amp; exit</div>
+            <div class="local-feature">A1139 Fletton Parkway merging</div>
+            <div class="local-feature">A15/A47 junction sequences</div>
+            <div class="local-feature">Hampton, Werrington &amp; Ortons routes</div>
+          </div>
+        </div>
+        <div class="local-card reveal reveal-delay-1">
+          <div class="local-icon">🛣️</div>
+          <div class="local-name">Grantham</div>
+          <div class="local-address">102 High Dike NG31 7TX</div>
+          <div class="local-features">
+            <div class="local-feature">Rural road sections &amp; crests</div>
+            <div class="local-feature">A1 dual carriageway joining</div>
+            <div class="local-feature">Village junction sequences</div>
+            <div class="local-feature">Top faults on this route</div>
+          </div>
+        </div>
+        <div class="local-card reveal reveal-delay-2">
+          <div class="local-icon">⚡</div>
+          <div class="local-name">Kettering</div>
+          <div class="local-address">Orion Way NN15 6NL</div>
+          <div class="local-features">
+            <div class="local-feature">High-capacity test centre layout</div>
+            <div class="local-feature">Shorter wait times — fast-track option</div>
+            <div class="local-feature">Open 7 days route walkthroughs</div>
+            <div class="local-feature">Top faults on this route</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TESTIMONIALS ───────────────────────────────────────── -->
+  <section id="testimonials">
+    <div class="section-inner">
+      <span class="section-label reveal">Student Reviews</span>
+      <h2 class="section-title reveal">What learners say</h2>
+      <div class="testimonials-grid">
+        <div class="testimonial reveal">
+          <div class="t-stars">★★★★★</div>
+          <div class="t-quote">"Passed first time with Robert! His YouTube videos helped so much with my nerves. I couldn't recommend him highly enough."</div>
+          <div class="t-author"><div class="t-avatar">S</div><div><div class="t-name">Sarah J.</div><div class="t-location">Peterborough</div></div></div>
+        </div>
+        <div class="testimonial reveal reveal-delay-1">
+          <div class="t-stars">★★★★★</div>
+          <div class="t-quote">"Mastered the Eye Roundabout thanks to the intensive course. Best instructor in the area — worth every penny."</div>
+          <div class="t-author"><div class="t-avatar">M</div><div><div class="t-name">Michael T.</div><div class="t-location">Hampton</div></div></div>
+        </div>
+        <div class="testimonial reveal reveal-delay-2">
+          <div class="t-stars">★★★★★</div>
+          <div class="t-quote">"Robert knows the Grantham routes inside out. Calm, patient and thorough — I felt completely ready on test day."</div>
+          <div class="t-author"><div class="t-avatar">D</div><div><div class="t-name">David L.</div><div class="t-location">Grantham</div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PRICING ────────────────────────────────────────────── -->
+  <section class="pricing" id="pricing">
+    <div class="section-inner">
+      <span class="section-label reveal">Simple Pricing</span>
+      <h2 class="section-title reveal">One price. Full access. No hidden fees.</h2>
+      <p class="section-sub reveal">One-time payment. 12 months access. Free theory bundle included with every course.</p>
+
+      <div class="pricing-grid">
+        <div class="pricing-card reveal">
+          <div class="pricing-name">Manual Course</div>
+          <div class="pricing-car">Toyota Aygo X · 66 videos</div>
+          <div class="pricing-price"><span class="price-big">£39</span><span class="price-old">£59</span></div>
+          <div class="pricing-period">12 months access · one-time payment</div>
+          <div class="pricing-features">
+            <div class="pf-item"><span class="pf-check">✓</span>66 video lessons</div>
+            <div class="pf-item"><span class="pf-check">✓</span>All 15 modules covered</div>
+            <div class="pf-item"><span class="pf-check">✓</span>Local Peterborough, Grantham &amp; Kettering routes</div>
+            <div class="pf-item"><span class="pf-check">✓</span>Free theory bundle included</div>
+            <div class="pf-item"><span class="pf-check">✓</span>Watch on any device</div>
+          </div>
+          <a class="btn btn-outline" href="#" onclick="alert('Stripe checkout coming soon!')">Buy Manual Course →</a>
+          <div class="pricing-note">One-time payment · No hidden fees</div>
+        </div>
+
+        <div class="pricing-card featured reveal reveal-delay-1">
+          <div class="popular-badge">⭐ Most Popular</div>
+          <div class="pricing-name">Automatic Course</div>
+          <div class="pricing-car">Toyota Yaris Cross · 62 videos</div>
+          <div class="pricing-price"><span class="price-big">£39</span><span class="price-old">£59</span></div>
+          <div class="pricing-period">12 months access · one-time payment</div>
+          <div class="pricing-features">
+            <div class="pf-item"><span class="pf-check">✓</span>62 video lessons</div>
+            <div class="pf-item"><span class="pf-check">✓</span>All 15 modules covered</div>
+            <div class="pf-item"><span class="pf-check">✓</span>Local Peterborough, Grantham &amp; Kettering routes</div>
+            <div class="pf-item"><span class="pf-check">✓</span>Free theory bundle included</div>
+            <div class="pf-item"><span class="pf-check">✓</span>Watch on any device</div>
+          </div>
+          <a class="btn btn-red" href="#" onclick="alert('Stripe checkout coming soon!')">Buy Automatic Course →</a>
+          <div class="pricing-note">One-time payment · No hidden fees</div>
+        </div>
+
+        <div class="pricing-card reveal reveal-delay-2">
+          <div class="pricing-name">Theory Bundle</div>
+          <div class="pricing-car">Free with any course</div>
+          <div class="pricing-price"><span class="price-big" style="font-size:2rem">Free</span></div>
+          <div class="pricing-period">Included with every course</div>
+          <div class="pricing-features">
+            <div class="pf-item"><span class="pf-check">✓</span>700+ theory revision questions</div>
+            <div class="pf-item"><span class="pf-check">✓</span>Mock theory tests</div>
+            <div class="pf-item"><span class="pf-check">✓</span>30+ hazard perception clips</div>
+            <div class="pf-item"><span class="pf-check">✓</span>100+ road sign flashcards</div>
+            <div class="pf-item"><span class="pf-check">✓</span>Powered by DTS Anytime</div>
+          </div>
+          <a class="btn btn-outline" href="https://www.dtsanytime.co.uk/login.aspx?Reseller=934" target="_blank">Try Free Theory App →</a>
+        </div>
+      </div>
+
+      <div class="pricing-discount reveal">
+        <div class="discount-icon">🎁</div>
+        <div class="discount-text">
+          <strong>D4Driving pupil? Get 50% off.</strong>
+          <span>Ask Robert for your discount code at your next lesson, or when you book.</span>
+        </div>
+        <div class="discount-code">D4PUPIL</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FAQ ────────────────────────────────────────────────── -->
+  <section id="faq">
+    <div class="section-inner">
+      <span class="section-label reveal">FAQs</span>
+      <h2 class="section-title reveal">Common questions</h2>
+      <div class="faq-list reveal">
+        <div class="faq-item">
+          <div class="faq-q">Do I need to be a D4Driving pupil to buy the course?</div>
+          <div class="faq-a">No — the course is available to any learner driver in the UK. D4Driving pupils simply get a 50% discount with the code provided by Robert at lessons.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">How long do I have access for?</div>
+          <div class="faq-a">You get 12 months full access from the date of purchase. That's plenty of time to work through all the material at your own pace and revisit anything before your test.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Can I watch on my phone?</div>
+          <div class="faq-a">Yes — the course works on any device. Phone, tablet, laptop or desktop. Your progress is saved automatically so you can pick up where you left off.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">I'm not taking my test in Peterborough — is it still worth it?</div>
+          <div class="faq-a">Absolutely. Modules 1–13 and 15 cover universal driving skills that apply to every test centre in the UK. The local route videos (Module 14) are a bonus — but the rest of the course stands fully on its own.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Is this a replacement for driving lessons?</div>
+          <div class="faq-a">No — and it's not meant to be. The course is designed to complement your lessons by giving you the theory knowledge before you get in the car. Learners who arrive prepared make faster progress and need fewer lessons.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">What if I buy the wrong course?</div>
+          <div class="faq-a">Get in touch and we'll swap it. If you're unsure whether to go manual or automatic, the automatic course in the Yaris Cross is often the quicker route to test — but talk to Robert if you need advice.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ROBERT ─────────────────────────────────────────────── -->
+  <section class="robert">
+    <div class="robert-inner">
+      <img class="robert-img" src="https://d4driving.co.uk/robert.webp" alt="Robert — D4Driving Instructor" />
+      <div>
+        <div class="robert-label">Your Instructor</div>
+        <div class="robert-name">Hi, I'm Robert.</div>
+        <div class="robert-bio">
+          I'm a DVSA Approved Driving Instructor based in Peterborough and I've been helping learners pass their tests since 2017. I created this course because I believe every learner deserves proper knowledge before they get in the car — not just an instructor explaining things parked at the side of the road.
+          <br/><br/>
+          I share free driving tips with 10,000+ YouTube subscribers and I know the Peterborough, Grantham and Kettering test routes better than anyone.
+        </div>
+        <div class="robert-creds">
+          <span class="cred-chip">✅ DVSA Approved ADI</span>
+          <span class="cred-chip">📍 Peterborough since 2017</span>
+          <span class="cred-chip">▶ 10k+ YouTube subscribers</span>
+          <span class="cred-chip">🏁 420+ local passes</span>
+          <span class="cred-chip">🚗 Manual &amp; Automatic</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ────────────────────────────────────────────────── -->
+  <div class="cta-banner">
+    <h2>Ready to pass sooner?</h2>
+    <p>Join hundreds of learners who prepared smarter — and passed with confidence.</p>
+    <div class="cta-btns">
+      <a class="btn-white" href="#pricing">Get Instant Access — £39</a>
+      <a class="btn-ghost" href="https://www.d4driving.co.uk">Book a Lesson Instead</a>
+    </div>
+  </div>
+
+  <!-- ── FOOTER ─────────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo"><img src="https://d4driving.co.uk/400dpiLogoCropped.png" alt="D4Driving" /></div>
+        <div class="footer-tagline">The D4Driving Online Course. Learn at your own pace. Pass sooner. Created by Robert — DVSA Approved Driving Instructor, Peterborough.</div>
+        <div class="footer-social">
+          <a class="social-link" href="https://www.youtube.com/@d4drivingSOM" target="_blank" title="YouTube">▶</a>
+          <a class="social-link" href="https://www.facebook.com/d4drivingsom" target="_blank" title="Facebook">f</a>
+          <a class="social-link" href="https://www.tiktok.com/@d4drivingsom" target="_blank" title="TikTok">♪</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-heading">Course</div>
+        <div class="footer-links">
+          <a href="#modules">Manual Course</a>
+          <a href="#modules">Automatic Course</a>
+          <a href="#local">Test Route Guides</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#">Login</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-heading">Support</div>
+        <div class="footer-links">
+          <a href="#faq">FAQs</a>
+          <a href="https://wa.me/447872347686" target="_blank">WhatsApp Robert</a>
+          <a href="tel:07872347686">07872 347686</a>
+          <a href="#">Terms &amp; Conditions</a>
+          <a href="#">Privacy Policy</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-heading">D4Driving</div>
+        <div class="footer-links">
+          <a href="https://www.d4driving.co.uk">Main Website</a>
+          <a href="https://www.d4driving.co.uk#prices">Lesson Prices</a>
+          <a href="https://www.d4driving.co.uk#booking">Book a Lesson</a>
+          <a href="https://www.youtube.com/@d4drivingSOM" target="_blank">Free YouTube Tips</a>
+          <a href="https://www.dtsanytime.co.uk/login.aspx?Reseller=934" target="_blank">Free Theory App</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 D4Driving School of Motoring. All rights reserved.</span>
+      <span>learn.d4driving.co.uk</span>
+    </div>
+  </footer>
+
+  <script>
+    // ── Reveal on scroll
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+
+    // ── Module tab switcher
+    function switchTab(type, btn) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const manual = document.getElementById('panel-manual');
+      const auto   = document.getElementById('panel-auto');
+      if (type === 'manual') {
+        manual.style.display = 'grid'; manual.classList.add('active');
+        auto.style.display   = 'none';  auto.classList.remove('active');
+      } else {
+        auto.style.display   = 'grid'; auto.classList.add('active');
+        manual.style.display = 'none'; manual.classList.remove('active');
+      }
+    }
+
+    // ── FAQ accordion
+    document.querySelectorAll('.faq-q').forEach(q => {
+      q.addEventListener('click', () => {
+        const item = q.parentElement;
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+        if (!isOpen) item.classList.add('open');
+      });
+    });
+  </script>
+</body>
+</html>

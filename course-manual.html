@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manual Course — D4Driving Online Course</title>
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="https://d4driving.co.uk/400dpiLogoCropped.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── TOKENS ─────────────────────────────────────────── */
+    :root {
+      --red:        #BD2026;
+      --red-dark:   #981a1f;
+      --red-light:  #f5e6e6;
+      --slate:      #2C3E50;
+      --slate-mid:  #3d5166;
+      --sage:       #8fa3a0;
+      --sage-light: #e8eeee;
+      --bg:         #fbfdff;
+      --white:      #ffffff;
+      --grey-100:   #f4f6f8;
+      --grey-200:   #e8ecf0;
+      --grey-400:   #9aacb8;
+      --grey-600:   #5a6a76;
+      --text:       #1e2c38;
+      --sidebar-w:  320px;
+      --nav-h:      60px;
+      --radius:     12px;
+      --shadow-sm:  0 2px 8px rgba(44,62,80,.07);
+      --shadow-md:  0 6px 24px rgba(44,62,80,.11);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; overflow: hidden; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--grey-100);
+      color: var(--text);
+      display: flex; flex-direction: column;
+    }
+
+    /* ── LOADING SCREEN ── */
+    #loading-screen {
+      position: fixed; inset: 0; z-index: 999;
+      background: var(--bg);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 1rem;
+    }
+    #loading-screen img { height: 42px; }
+    .loading-bar { width: 160px; height: 3px; background: var(--grey-200); border-radius: 100px; overflow: hidden; }
+    .loading-bar-fill { height: 100%; width: 0; background: var(--red); border-radius: 100px; animation: loadfill 1.4s ease forwards; }
+    @keyframes loadfill { to { width: 100%; } }
+    .loading-text { font-size: .8rem; color: var(--grey-400); font-weight: 600; }
+
+    /* ── TOP NAV ── */
+    .top-nav {
+      height: var(--nav-h);
+      background: var(--slate);
+      display: flex; align-items: center;
+      padding: 0 1rem; gap: 1rem;
+      flex-shrink: 0; z-index: 40;
+      position: relative;
+    }
+    .nav-logo img { height: 28px; filter: brightness(0) invert(1); }
+    .nav-course-title {
+      font-size: .82rem; font-weight: 700; color: rgba(255,255,255,.7);
+      border-left: 1px solid rgba(255,255,255,.2); padding-left: 1rem;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .nav-right { margin-left: auto; display: flex; align-items: center; gap: .75rem; }
+    .nav-progress-wrap {
+      display: flex; align-items: center; gap: .6rem;
+      font-size: .78rem; color: rgba(255,255,255,.65);
+    }
+    .nav-progress-bar {
+      width: 100px; height: 5px;
+      background: rgba(255,255,255,.15); border-radius: 100px; overflow: hidden;
+    }
+    .nav-progress-fill {
+      height: 100%; background: var(--red); border-radius: 100px;
+      transition: width .5s ease;
+    }
+    .btn-nav {
+      font-size: .76rem; font-weight: 700; color: rgba(255,255,255,.65);
+      background: none; border: 1px solid rgba(255,255,255,.18);
+      padding: .3rem .7rem; border-radius: 6px; cursor: pointer;
+      font-family: inherit; white-space: nowrap;
+      transition: background .15s, color .15s;
+    }
+    .btn-nav:hover { background: rgba(255,255,255,.1); color: var(--white); }
+
+    /* Hamburger (mobile) */
+    .hamburger {
+      display: none; flex-direction: column; gap: 4px;
+      background: none; border: none; cursor: pointer; padding: .25rem;
+    }
+    .hamburger span {
+      width: 20px; height: 2px; background: rgba(255,255,255,.75);
+      border-radius: 2px; transition: all .2s;
+    }
+
+    /* ── MAIN LAYOUT ── */
+    .layout {
+      flex: 1; display: flex; overflow: hidden;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: var(--sidebar-w); flex-shrink: 0;
+      background: var(--white);
+      border-right: 1px solid var(--grey-200);
+      display: flex; flex-direction: column;
+      overflow: hidden;
+      transition: transform .3s ease;
+    }
+
+    .sidebar-header {
+      padding: 1rem;
+      border-bottom: 1px solid var(--grey-200);
+      flex-shrink: 0;
+    }
+    .sidebar-title { font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--grey-400); margin-bottom: .5rem; }
+    .sidebar-stats { display: flex; gap: .75rem; }
+    .sidebar-stat {
+      flex: 1; text-align: center;
+      background: var(--grey-100); border-radius: 8px; padding: .5rem;
+    }
+    .sidebar-stat-val { font-size: 1rem; font-weight: 800; color: var(--slate); }
+    .sidebar-stat-lbl { font-size: .68rem; color: var(--grey-400); margin-top: .1rem; }
+
+    .sidebar-scroll { flex: 1; overflow-y: auto; }
+    .sidebar-scroll::-webkit-scrollbar { width: 4px; }
+    .sidebar-scroll::-webkit-scrollbar-track { background: transparent; }
+    .sidebar-scroll::-webkit-scrollbar-thumb { background: var(--grey-200); border-radius: 2px; }
+
+    /* Module group */
+    .mod-group { border-bottom: 1px solid var(--grey-100); }
+    .mod-group-header {
+      display: flex; align-items: center; gap: .6rem;
+      padding: .75rem 1rem;
+      cursor: pointer; user-select: none;
+      background: var(--white);
+      transition: background .15s;
+    }
+    .mod-group-header:hover { background: var(--grey-100); }
+    .mod-group-header.has-active { background: var(--red-light); }
+    .mod-icon {
+      width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .68rem; font-weight: 800;
+    }
+    .mod-icon.done     { background: var(--red); color: var(--white); }
+    .mod-icon.partial  { background: var(--red-light); color: var(--red); }
+    .mod-icon.locked   { background: var(--grey-100); color: var(--grey-400); }
+    .mod-icon.unlocked { background: var(--grey-200); color: var(--slate); }
+    .mod-group-info { flex: 1; min-width: 0; }
+    .mod-group-name {
+      font-size: .82rem; font-weight: 700; color: var(--slate);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .mod-group-meta { font-size: .7rem; color: var(--grey-400); margin-top: .1rem; }
+    .mod-chevron {
+      font-size: .65rem; color: var(--grey-400);
+      transition: transform .2s; flex-shrink: 0;
+    }
+    .mod-group.open .mod-chevron { transform: rotate(90deg); }
+
+    /* Lesson rows */
+    .mod-lessons { display: none; }
+    .mod-group.open .mod-lessons { display: block; }
+    .lesson-row {
+      display: flex; align-items: center; gap: .6rem;
+      padding: .6rem 1rem .6rem 1.75rem;
+      cursor: pointer;
+      transition: background .15s;
+      border-left: 3px solid transparent;
+    }
+    .lesson-row:hover { background: var(--grey-100); }
+    .lesson-row.active {
+      background: var(--red-light);
+      border-left-color: var(--red);
+    }
+    .lesson-row.locked-lesson {
+      opacity: .45; cursor: not-allowed;
+    }
+    .lesson-row.locked-lesson:hover { background: transparent; }
+    .lesson-check {
+      width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .6rem;
+    }
+    .lesson-check.done     { background: var(--red); color: var(--white); }
+    .lesson-check.current  { background: var(--red-light); border: 2px solid var(--red); }
+    .lesson-check.todo     { background: var(--grey-100); border: 1.5px solid var(--grey-200); }
+    .lesson-check.locked   { background: var(--grey-100); color: var(--grey-400); font-size: .55rem; }
+    .lesson-title-text {
+      font-size: .8rem; color: var(--slate); line-height: 1.35; flex: 1;
+    }
+    .lesson-row.active .lesson-title-text { font-weight: 700; color: var(--red); }
+    .lesson-duration { font-size: .68rem; color: var(--grey-400); white-space: nowrap; }
+
+    /* ── MAIN CONTENT ── */
+    .main-content {
+      flex: 1; display: flex; flex-direction: column;
+      overflow: hidden; min-width: 0;
+    }
+
+    /* Video area */
+    .video-area {
+      background: #000;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .video-ratio {
+      position: relative; width: 100%; padding-top: 56.25%;
+    }
+    .video-ratio iframe,
+    .video-placeholder {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      border: none;
+    }
+    .video-placeholder {
+      background: linear-gradient(135deg, #1a252f 0%, #2c3e50 100%);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 1rem;
+    }
+    .placeholder-icon { font-size: 3rem; opacity: .4; }
+    .placeholder-title { font-size: 1rem; font-weight: 700; color: rgba(255,255,255,.5); text-align: center; padding: 0 2rem; }
+    .placeholder-sub { font-size: .82rem; color: rgba(255,255,255,.3); text-align: center; padding: 0 2rem; }
+
+    /* Lesson info bar */
+    .lesson-info-bar {
+      background: var(--white);
+      border-bottom: 1px solid var(--grey-200);
+      padding: 1rem 1.25rem;
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 1rem; flex-shrink: 0;
+    }
+    .lesson-info-left { flex: 1; min-width: 0; }
+    .lesson-breadcrumb {
+      font-size: .72rem; color: var(--grey-400); margin-bottom: .3rem;
+      font-weight: 600; letter-spacing: .04em;
+    }
+    .lesson-main-title {
+      font-size: 1.05rem; font-weight: 800; color: var(--slate);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .lesson-info-right { display: flex; gap: .5rem; flex-shrink: 0; }
+
+    /* Nav buttons */
+    .btn-lesson-nav {
+      display: flex; align-items: center; gap: .35rem;
+      padding: .5rem .9rem; border-radius: 8px;
+      font-size: .8rem; font-weight: 700; cursor: pointer;
+      border: 1.5px solid var(--grey-200); background: var(--white);
+      color: var(--grey-600); font-family: inherit;
+      transition: all .15s;
+    }
+    .btn-lesson-nav:hover:not(:disabled) { border-color: var(--slate); color: var(--slate); }
+    .btn-lesson-nav:disabled { opacity: .35; cursor: not-allowed; }
+    .btn-lesson-nav.complete-btn {
+      background: var(--red); color: var(--white); border-color: var(--red);
+      box-shadow: 0 3px 10px rgba(189,32,38,.25);
+    }
+    .btn-lesson-nav.complete-btn:hover { background: var(--red-dark); border-color: var(--red-dark); }
+    .btn-lesson-nav.completed-btn {
+      background: #dcfce7; color: #16a34a; border-color: #86efac;
+    }
+
+    /* Scrollable lesson details */
+    .lesson-details {
+      flex: 1; overflow-y: auto; padding: 1.25rem;
+    }
+    .lesson-details::-webkit-scrollbar { width: 4px; }
+    .lesson-details::-webkit-scrollbar-thumb { background: var(--grey-200); border-radius: 2px; }
+
+    .lesson-desc-card {
+      background: var(--white); border: 1.5px solid var(--grey-200);
+      border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1rem;
+    }
+    .lesson-desc-title { font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--grey-400); margin-bottom: .6rem; }
+    .lesson-desc-text { font-size: .88rem; color: var(--grey-600); line-height: 1.7; }
+
+    /* Key points */
+    .key-points {
+      background: var(--white); border: 1.5px solid var(--grey-200);
+      border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1rem;
+    }
+    .key-points-title { font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--grey-400); margin-bottom: .75rem; }
+    .key-point-item {
+      display: flex; align-items: flex-start; gap: .6rem;
+      font-size: .86rem; color: var(--grey-600); padding: .4rem 0;
+      border-bottom: 1px solid var(--grey-100); line-height: 1.5;
+    }
+    .key-point-item:last-child { border-bottom: none; }
+    .kp-dot { color: var(--red); font-weight: 800; margin-top: .05rem; flex-shrink: 0; }
+
+    /* Up next card */
+    .up-next-card {
+      background: var(--slate); border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      display: flex; align-items: center; gap: 1rem;
+      cursor: pointer; transition: background .15s;
+    }
+    .up-next-card:hover { background: var(--slate-mid); }
+    .up-next-label { font-size: .7rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--sage); margin-bottom: .25rem; }
+    .up-next-title { font-size: .9rem; font-weight: 700; color: var(--white); }
+    .up-next-arrow { margin-left: auto; color: rgba(255,255,255,.4); font-size: 1.2rem; flex-shrink: 0; }
+
+    /* ── MOBILE OVERLAY ── */
+    .sidebar-overlay {
+      display: none; position: fixed; inset: 0; z-index: 38;
+      background: rgba(0,0,0,.4); backdrop-filter: blur(2px);
+    }
+
+    /* ── COMPLETION TOAST ── */
+    .toast {
+      position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 200;
+      background: #16a34a; color: var(--white);
+      padding: .85rem 1.25rem; border-radius: 12px;
+      font-size: .88rem; font-weight: 700;
+      box-shadow: 0 8px 24px rgba(0,0,0,.2);
+      display: flex; align-items: center; gap: .6rem;
+      transform: translateY(80px); opacity: 0;
+      transition: transform .3s ease, opacity .3s ease;
+      pointer-events: none;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* ── MOBILE RESPONSIVE ── */
+    @media (max-width: 768px) {
+      :root { --sidebar-w: 290px; }
+
+      .hamburger { display: flex; }
+      .nav-progress-wrap { display: none; }
+
+      .sidebar {
+        position: fixed; left: 0; top: var(--nav-h); bottom: 0;
+        z-index: 39; transform: translateX(-100%);
+      }
+      .sidebar.open { transform: translateX(0); }
+      .sidebar-overlay { display: block; }
+      .sidebar-overlay.visible { display: block; opacity: 1; pointer-events: all; }
+
+      .lesson-info-bar { flex-direction: column; }
+      .lesson-info-right { width: 100%; }
+      .btn-lesson-nav { flex: 1; justify-content: center; }
+    }
+
+    @media (max-width: 480px) {
+      .lesson-main-title { font-size: .95rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Loading -->
+  <div id="loading-screen">
+    <img src="https://d4driving.co.uk/400dpiLogoCropped.png" alt="D4Driving" />
+    <div class="loading-bar"><div class="loading-bar-fill"></div></div>
+    <div class="loading-text">Loading your course…</div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">✅ <span id="toast-text">Lesson marked complete!</span></div>
+
+  <!-- Top Nav -->
+  <nav class="top-nav">
+    <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="dashboard.html">
+      <img src="https://d4driving.co.uk/400dpiLogoCropped.png" alt="D4Driving" style="height:28px;filter:brightness(0) invert(1)" />
+    </a>
+    <span class="nav-course-title">🚗 Manual Course — Toyota Aygo X</span>
+    <div class="nav-right">
+      <div class="nav-progress-wrap">
+        <div class="nav-progress-bar">
+          <div class="nav-progress-fill" id="nav-progress-fill" style="width:0%"></div>
+        </div>
+        <span id="nav-progress-text">0%</span>
+      </div>
+      <button class="btn-nav" onclick="window.location.href='dashboard.html'">← Dashboard</button>
+      <button class="btn-nav" onclick="signOut()">Sign Out</button>
+    </div>
+  </nav>
+
+  <!-- Sidebar overlay (mobile) -->
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+  <!-- Layout -->
+  <div class="layout">
+
+    <!-- ── SIDEBAR ── -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-title">Course Progress</div>
+        <div class="sidebar-stats">
+          <div class="sidebar-stat">
+            <div class="sidebar-stat-val" id="stat-done">0</div>
+            <div class="sidebar-stat-lbl">Completed</div>
+          </div>
+          <div class="sidebar-stat">
+            <div class="sidebar-stat-val">66</div>
+            <div class="sidebar-stat-lbl">Total</div>
+          </div>
+          <div class="sidebar-stat">
+            <div class="sidebar-stat-val" id="stat-pct">0%</div>
+            <div class="sidebar-stat-lbl">Progress</div>
+          </div>
+        </div>
+      </div>
+      <div class="sidebar-scroll" id="sidebar-scroll">
+        <!-- Populated by JS -->
+      </div>
+    </aside>
+
+    <!-- ── MAIN CONTENT ── -->
+    <main class="main-content">
+
+      <!-- Video player -->
+      <div class="video-area">
+        <div class="video-ratio" id="video-ratio">
+          <div class="video-placeholder" id="video-placeholder">
+            <div class="placeholder-icon">🎬</div>
+            <div class="placeholder-title" id="placeholder-title">Select a lesson to begin</div>
+            <div class="placeholder-sub" id="placeholder-sub">Choose any lesson from the sidebar</div>
+          </div>
+          <!-- YouTube iframe injected here by JS -->
+        </div>
+      </div>
+
+      <!-- Lesson info bar -->
+      <div class="lesson-info-bar">
+        <div class="lesson-info-left">
+          <div class="lesson-breadcrumb" id="lesson-breadcrumb">D4Driving Manual Course</div>
+          <div class="lesson-main-title" id="lesson-main-title">Welcome to the D4Driving Manual Course</div>
+        </div>
+        <div class="lesson-info-right">
+          <button class="btn-lesson-nav" id="btn-prev" onclick="navLesson(-1)" disabled>← Prev</button>
+          <button class="btn-lesson-nav complete-btn" id="btn-complete" onclick="markComplete()">✓ Mark Complete</button>
+          <button class="btn-lesson-nav" id="btn-next" onclick="navLesson(1)" disabled>Next →</button>
+        </div>
+      </div>
+
+      <!-- Scrollable details -->
+      <div class="lesson-details" id="lesson-details">
+
+        <div class="lesson-desc-card">
+          <div class="lesson-desc-title">About This Lesson</div>
+          <div class="lesson-desc-text" id="lesson-desc">
+            Select a lesson from the sidebar to get started. Work through each module in order, marking lessons complete as you go. Your progress is saved automatically.
+          </div>
+        </div>
+
+        <div class="key-points" id="key-points-card">
+          <div class="key-points-title">Key Points</div>
+          <div id="key-points-list">
+            <div class="key-point-item"><span class="kp-dot">▸</span> Watch each video before your lesson on that topic</div>
+            <div class="key-point-item"><span class="kp-dot">▸</span> Mark lessons complete once you've understood the content</div>
+            <div class="key-point-item"><span class="kp-dot">▸</span> Revisit any lesson as many times as you need</div>
+            <div class="key-point-item"><span class="kp-dot">▸</span> Module 14 covers your specific local test routes</div>
+          </div>
+        </div>
+
+        <div class="up-next-card" id="up-next-card" onclick="navLesson(1)" style="display:none">
+          <div>
+            <div class="up-next-label">Up Next</div>
+            <div class="up-next-title" id="up-next-title">—</div>
+          </div>
+          <div class="up-next-arrow">›</div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ── SUPABASE SDK ── -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+  <script>
+    // ─────────────────────────────────────────────────────────
+    // ⚠️  REPLACE THESE TWO VALUES (same as login.html / dashboard.html)
+    // ─────────────────────────────────────────────────────────
+    const SUPABASE_URL  = 'YOUR_SUPABASE_URL'
+    const SUPABASE_ANON = 'YOUR_SUPABASE_ANON_KEY'
+    // ─────────────────────────────────────────────────────────
+
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON)
+
+    // ─────────────────────────────────────────────────────────
+    // COURSE DATA
+    // Each lesson has:
+    //   id        — unique string used to track progress e.g. "1-1"
+    //   title     — display title
+    //   duration  — approximate runtime shown in sidebar
+    //   youtubeId — paste the YouTube video ID here when filmed
+    //               (the part after ?v= in the URL)
+    //   desc      — shown below the video
+    //   points    — array of key bullet points
+    // ─────────────────────────────────────────────────────────
+    const COURSE = [
+      {
+        num: 1, title: 'Before You Get Moving',
+        lessons: [
+          {
+            id: '1-1', title: 'The Cockpit Drill (DSSSM)', duration: '4 min',
+            youtubeId: '',
+            desc: 'Before every drive, a proper cockpit drill keeps you safe and sets you up for a good lesson. This video walks through the full DSSSM routine — Doors, Seat, Steering, Seatbelt, Mirrors — step by step.',
+            points: ['Always do the cockpit drill before moving off', 'Adjust seat so you can fully depress the clutch with a slight knee bend', 'Mirrors should show a small amount of the car\'s bodywork', 'Headrests should align with the top of your head']
+          },
+          {
+            id: '1-2', title: 'Controls Overview', duration: '5 min',
+            youtubeId: '',
+            desc: 'A tour of all the controls in the Toyota Aygo X — exactly the car you\'ll be learning in. Covers the pedals, steering wheel controls, indicators, wipers, lights and dashboard symbols.',
+            points: ['The clutch is always the left pedal in a manual', 'Indicators cancel automatically after a turn — but check they have', 'Get familiar with the windscreen wiper stalk before you need it in the rain', 'Know where your hazard lights switch is']
+          },
+          {
+            id: '1-3', title: 'Show Me / Tell Me — Bonnet Questions', duration: '5 min',
+            youtubeId: '',
+            desc: 'The examiner will ask one "tell me" question before your test starts. This video covers all the under-bonnet checks — oil, coolant, brake fluid and washer fluid — so you can answer with confidence.',
+            points: ['Oil level should be between MIN and MAX on the dipstick', 'Coolant reservoir should be between the MIN and MAX markings', 'Brake fluid reservoir is near the back of the engine bay', 'Washer fluid — top up regularly, especially in winter']
+          },
+          {
+            id: '1-4', title: 'Show Me / Tell Me — In-Car Questions', duration: '4 min',
+            youtubeId: '',
+            desc: 'Some "show me" questions are asked while driving. This video covers all the in-car ones — rear demister, horn, heated windscreen, and more — so there are no surprises.',
+            points: ['The examiner picks one from the official DVSA list', 'Practice operating each control without looking down', 'Rear demister button is usually on the centre console', 'Don\'t forget to demonstrate safe operation — eyes on the road']
+          },
+          {
+            id: '1-5', title: 'Eyesight Check & Test Day Preparation', duration: '3 min',
+            youtubeId: '',
+            desc: 'The test starts with an eyesight check — reading a number plate from 20 metres. This video also covers what to bring, what to expect arriving at the test centre, and how to prepare the night before.',
+            points: ['Read a number plate from 20 metres — if in doubt, get your eyes tested', 'Bring your provisional licence on test day — no licence = no test', 'Arrive 10 minutes early to settle nerves', 'Eat something before — a test on an empty stomach makes nerves worse']
+          },
+        ]
+      },
+      {
+        num: 2, title: 'First Moves',
+        lessons: [
+          {
+            id: '2-1', title: 'Moving Off on a Flat Road', duration: '5 min',
+            youtubeId: '',
+            desc: 'Moving off smoothly is one of the first skills you\'ll practise. This video breaks down the full routine — POM (Prepare, Observe, Move) — and shows exactly what the examiner wants to see.',
+            points: ['Prepare the car before you look — get to biting point first', 'Check all mirrors and blind spot before releasing the handbrake', 'Signal if it will benefit any road user — don\'t signal automatically', 'Move off smoothly — avoid stalling or rolling back']
+          },
+          {
+            id: '2-2', title: 'Stopping Safely', duration: '4 min',
+            youtubeId: '',
+            desc: 'A normal stop requires planning ahead — not late braking. This video covers how to bring the car to a smooth, controlled stop in the correct position close to the kerb.',
+            points: ['Use the MSM routine before stopping', 'Brake progressively — firm initial pressure, ease off as you slow', 'Clutch down just before stopping to avoid stalling', 'Stop parallel to and within 30cm of the kerb']
+          },
+          {
+            id: '2-3', title: 'Steering Technique', duration: '4 min',
+            youtubeId: '',
+            desc: 'Good steering is the foundation of safe driving. This video demonstrates the push-pull method, when to use rotational steering, and common mistakes that cause test failures.',
+            points: ['Hold the wheel at approximately quarter-to-three position', 'Feed the wheel through your hands using push-pull method', 'Never let the wheel spin back uncontrolled after a turn', 'Keep both hands on the wheel except when changing gear']
+          },
+          {
+            id: '2-4', title: 'Moving Off at an Angle', duration: '5 min',
+            youtubeId: '',
+            desc: 'Moving off from behind a parked car requires extra steering and observation. This is a common early lesson topic and something examiners look for throughout the test.',
+            points: ['Steer out more sharply than you think — then straighten up', 'Check for cyclists passing on your right before moving', 'Don\'t clip the parked car\'s mirror with your shoulder', 'If the gap is tight, wait — don\'t force it']
+          },
+          {
+            id: '2-5', title: 'Hill Starts — Uphill and Downhill', duration: '6 min',
+            youtubeId: '',
+            desc: 'Hill starts catch many learners out. This video covers both uphill (finding biting point before releasing the handbrake) and downhill (using footbrake, not handbrake) techniques.',
+            points: ['Uphill: get to biting point before releasing the handbrake', 'You should feel the front of the car dip slightly at biting point', 'Downhill: use the footbrake to control descent — not the handbrake', 'If you roll back on a hill — don\'t panic, clutch down and brake']
+          },
+          {
+            id: '2-6', title: 'Clutch Control — Finding the Biting Point', duration: '5 min',
+            youtubeId: '',
+            desc: 'The biting point is the moment the clutch plates begin to connect. Mastering this is the key to smooth hill starts and moving off in traffic. Filmed in the Toyota Aygo X.',
+            points: ['Every car has a different biting point — feel for the dip', 'Raise the clutch slowly — rushing causes stalls', 'Once moving, continue raising the clutch smoothly', 'Practice in a quiet car park before tackling hills']
+          },
+        ]
+      },
+      {
+        num: 3, title: 'Gears & Speed Control',
+        lessons: [
+          {
+            id: '3-1', title: 'Clutch Control In Depth', duration: '5 min',
+            youtubeId: '',
+            desc: 'A deeper dive into clutch control — covering slow-speed manoeuvring, slipping the clutch in traffic, and the most common mistakes that lead to stalls and kangaroo starts.',
+            points: ['Slipping the clutch is valid at slow speeds — don\'t rush to fully release', 'Coasting (clutch fully down at speed) reduces control — avoid it', 'In slow traffic, use clutch and brake together to regulate speed', 'Stalling is a minor fault — recover calmly and carry on']
+          },
+          {
+            id: '3-2', title: 'Changing Up Through the Gears', duration: '5 min',
+            youtubeId: '',
+            desc: 'Smooth upward gear changes keep the car stable and fuel efficient. This video covers when to change up, the correct technique, and what the examiner listens for.',
+            points: ['Change up early to keep the engine quiet and smooth', 'Typical guide: 1st to 2nd by 10mph, 2nd to 3rd by 20mph', 'Cover the clutch and gear lever — don\'t rest your hand on the gear lever', 'Listen to the engine — if it\'s straining, you\'re in too high a gear']
+          },
+          {
+            id: '3-3', title: 'Changing Down Gears', duration: '4 min',
+            youtubeId: '',
+            desc: 'Changing down is about matching your gear to your speed as you slow. This video covers when to change down, block changes, and the difference between changing down for speed vs for a hazard.',
+            points: ['Change down as you slow — don\'t leave it too late', 'Match the gear to the speed you\'ll be travelling', 'Never change down to brake — use the footbrake first', 'Going through every gear isn\'t necessary — block changes are fine']
+          },
+          {
+            id: '3-4', title: 'Block Gear Changes', duration: '4 min',
+            youtubeId: '',
+            desc: 'Block changing — skipping gears — is efficient and demonstrates good vehicle control. This video shows when it\'s appropriate and how to do it smoothly.',
+            points: ['Skipping from 4th to 2nd is perfectly acceptable', 'Block changes are not a fault — they show good anticipation', 'Only block change if the speeds match — don\'t force the car', 'Upward block changes save time in fast-moving traffic']
+          },
+          {
+            id: '3-5', title: 'Acceleration Sense & Speed Management', duration: '5 min',
+            youtubeId: '',
+            desc: 'Acceleration sense means adjusting your speed smoothly in response to what you see ahead — reducing the need for heavy braking. It\'s one of the hallmarks of a skilled driver.',
+            points: ['Ease off the accelerator early when you see hazards ahead', 'Smooth acceleration is safer and more fuel efficient', 'Read junctions, roundabouts and bends well ahead', 'The examiner rewards anticipation — not just reaction']
+          },
+        ]
+      },
+      {
+        num: 4, title: 'The MSM Routine',
+        lessons: [
+          {
+            id: '4-1', title: 'Mirror-Signal-Manoeuvre Explained', duration: '5 min',
+            youtubeId: '',
+            desc: 'The MSM routine is the backbone of safe driving. This video breaks down every element and explains when and how to apply it consistently throughout your drive.',
+            points: ['Mirrors first — always, before any signal or change of direction', 'Signal in good time — not too early, not too late', 'The manoeuvre is the change of speed or direction', 'PSL (Position, Speed, Look) is the secondary routine for junctions']
+          },
+          {
+            id: '4-2', title: 'Road Positioning', duration: '5 min',
+            youtubeId: '',
+            desc: 'Where you position the car on the road affects safety, visibility and how other road users respond. This video covers normal driving position, meeting traffic and overtaking position.',
+            points: ['Normal position: approximately 1 metre from the kerb', 'Keep left — but not so far left you clip the kerb', 'Give parked cars a door\'s width of clearance', 'In narrow roads, be prepared to give way to oncoming traffic']
+          },
+          {
+            id: '4-3', title: 'Following Distance & the Two-Second Rule', duration: '4 min',
+            youtubeId: '',
+            desc: 'Following too closely (tailgating) is one of the top causes of accidents. The two-second rule gives a simple, practical way to judge safe following distance in any condition.',
+            points: ['Find a fixed point — the car ahead passes it, count two seconds', 'In wet weather, double it to four seconds', 'If you can\'t see the tyres of the car in front touching the road, you\'re too close', 'Tailgating is a serious fault — it shows lack of hazard awareness']
+          },
+        ]
+      },
+      {
+        num: 5, title: 'Junctions',
+        lessons: [
+          { id: '5-1', title: 'Approaching Junctions — MSPSL', duration: '5 min', youtubeId: '', desc: 'The MSPSL routine (Mirrors, Signal, Position, Speed, Look) is applied at every junction. This video walks through the full routine and explains each element.', points: ['Start the routine well before the junction', 'Position left for left turns, just left of centre for right turns', 'Speed: slow enough to stop if needed', 'Look: make sure it\'s safe before emerging'] },
+          { id: '5-2', title: 'Turning Left at a Junction', duration: '5 min', youtubeId: '', desc: 'Turning left looks simple but involves precise positioning, speed control and observation. This video covers the technique and what the examiner looks for.', points: ['Keep close to the left — don\'t swing wide', 'Check your nearside mirror for cyclists', 'Give way to pedestrians crossing the road you\'re turning into', 'Don\'t cut the corner'] },
+          { id: '5-3', title: 'Turning Right at a Junction', duration: '5 min', youtubeId: '', desc: 'Turning right means crossing oncoming traffic — so timing and observation are critical. This video shows the correct position, how to judge gaps, and how to handle the wait.', points: ['Position just left of centre line before turning', 'Wait for a safe gap in oncoming traffic', 'Don\'t cut the corner — go past the centre of the junction', 'Keep the wheels straight while waiting — in case you\'re shunted'] },
+          { id: '5-4', title: 'T-Junctions — Emerging Left (Open & Closed)', duration: '6 min', youtubeId: '', desc: 'T-junction approaches differ depending on visibility. Open junctions allow you to see clearly; closed junctions require you to creep forward. This video covers both.', points: ['Open junction: you can see it\'s clear — slow but don\'t necessarily stop', 'Closed junction: creep and peek until you can see', 'Always give way to traffic on the major road', 'Don\'t emerge if you\'re not sure — wait'] },
+          { id: '5-5', title: 'T-Junctions — Emerging Right', duration: '5 min', youtubeId: '', desc: 'Emerging right at a T-junction means crossing traffic from both directions. This requires looking both ways, judging two separate gaps, and moving decisively when safe.', points: ['Look right, look left, look right again', 'Judge both gaps simultaneously', 'Don\'t pull out slowly — commit when it\'s safe', 'Be aware of vehicles turning into your road'] },
+          { id: '5-6', title: 'Crossroads — Marked and Unmarked', duration: '5 min', youtubeId: '', desc: 'Crossroads with and without markings behave differently. This video explains priority rules, how to deal with vehicles turning across each other, and the coffin position.', points: ['At marked crossroads: give way to major road traffic', 'At unmarked: treat as equal priority — proceed with caution', 'Turning right opposite another right-turner: use offside-to-offside method', 'Watch for vehicles going straight ahead when you\'re turning right'] },
+          { id: '5-7', title: 'Box Junctions — When to Enter', duration: '4 min', youtubeId: '', desc: 'Yellow box junctions cause a lot of test failures. The rule is simple but commonly misunderstood. This video explains exactly when you can and can\'t enter a box junction.', points: ['Never enter a box junction unless your exit is clear', 'Exception: you may wait in a box if turning right and blocked by oncoming traffic', 'Even if a green light shows, don\'t enter if you\'ll block the box', 'Box junction penalties: £160 fine in camera-enforced areas'] },
+        ]
+      },
+      {
+        num: 6, title: 'Roundabouts',
+        lessons: [
+          { id: '6-1', title: 'Mini Roundabouts', duration: '4 min', youtubeId: '', desc: 'Mini roundabouts behave like standard ones but with less time and space. This video covers approach, priority, signalling and the tight turns required.', points: ['Give way to traffic from the right', 'Signal left when passing the exit before yours', 'Don\'t go the wrong way round — even if it seems quicker', 'Watch for vehicles who\'ve misjudged the mini roundabout'] },
+          { id: '6-2', title: 'Single-Lane Roundabouts — Left & Straight Ahead', duration: '5 min', youtubeId: '', desc: 'Taking the first or second exit at a single-lane roundabout. This video covers approach position, signalling and when to give way.', points: ['First exit (left): approach in left lane, signal left', 'Straight ahead: approach in left lane, no signal on approach', 'Signal left after passing the exit before yours', 'Always give way to traffic already on the roundabout'] },
+          { id: '6-3', title: 'Single-Lane Roundabouts — Turning Right', duration: '5 min', youtubeId: '', desc: 'Taking the third exit or beyond requires a right signal on approach and careful lane discipline. This video walks through the full technique.', points: ['Signal right on approach and stay right', 'Signal left when passing the exit before yours', 'Check your left mirror before moving left — cyclists creep up', 'Don\'t cut across the path of traffic going straight ahead'] },
+          { id: '6-4', title: 'Multi-Lane Roundabouts — Lane Choice', duration: '6 min', youtubeId: '', desc: 'Choosing the correct lane at multi-lane roundabouts is one of the most common sources of test failures. This video breaks down the decision process using real Peterborough examples.', points: ['Follow lane markings on the approach — they tell you where to go', 'If unsure, choose left — it\'s safer to take a wrong exit than cut across', 'Stay in your lane throughout the roundabout', 'Don\'t change lanes on the roundabout — only exit'] },
+          { id: '6-5', title: 'Spiral Roundabouts — Staying in Lane', duration: '5 min', youtubeId: '', desc: 'Spiral roundabouts have lanes that curve and shift — you must follow your lane markings throughout. This video explains how to read and follow them without drifting.', points: ['Your lane curves — don\'t drift into the lane to the right of you', 'Follow the road markings, not your instinct', 'Slow down on approach — give yourself time to read the lanes', 'Common in Peterborough — worth extra practise before your test'] },
+        ]
+      },
+      {
+        num: 7, title: 'Town Driving',
+        lessons: [
+          { id: '7-1', title: 'Following Traffic & Safe Gaps', duration: '4 min', youtubeId: '', desc: 'Town driving requires constant awareness of the vehicles ahead. This video covers safe following distance at low speeds, filtering traffic and dealing with slow-moving queues.', points: ['Keep enough distance to pull away without moving back', 'Don\'t block junctions when queueing', 'In slow traffic: use clutch control to creep, not brake-and-stop repeatedly', 'Stay alert — pedestrians step out between parked cars'] },
+          { id: '7-2', title: 'Meeting Oncoming Traffic on Narrow Roads', duration: '5 min', youtubeId: '', desc: 'Narrow roads require negotiation. This video explains who gives way, where to pull in, and how to communicate with other drivers when space is tight.', points: ['Give way to oncoming traffic if the obstruction is on your side', 'If both sides are clear, give way to larger vehicles', 'Don\'t assume — make eye contact and use a hand signal', 'Don\'t park opposite another parked car on a narrow road'] },
+          { id: '7-3', title: 'One-Way Streets', duration: '4 min', youtubeId: '', desc: 'One-way streets allow lane choice in both directions. This video explains how to choose your lane, when to use the right lane, and how to position for exits.', points: ['You can use any lane on a one-way street', 'Use right lane to turn right, left lane to turn left', 'Check for cyclists and motorcyclists filtering', 'Watch for vehicles turning across you'] },
+          { id: '7-4', title: 'Bus Lanes, Cycle Lanes & Tram Lines', duration: '4 min', youtubeId: '', desc: 'Driving in the wrong lane is an immediate test failure. This video explains how to identify restricted lanes, when they\'re active, and how to deal with tram tracks safely.', points: ['Bus lanes show operating hours on the sign — check before entering', 'Cycle lanes with solid white lines: don\'t cross', 'Tram lines: avoid parking in tram lanes', 'Cross tram tracks at right angles where possible'] },
+        ]
+      },
+      {
+        num: 8, title: 'Dual Carriageways',
+        lessons: [
+          { id: '8-1', title: 'Joining a Dual Carriageway from a Slip Road', duration: '5 min', youtubeId: '', desc: 'Joining fast-moving traffic safely requires matching speed on the slip road. This video covers how to use the acceleration lane, when to signal and how to merge safely.', points: ['Build speed on the slip road to match the carriageway', 'Check mirrors and blind spot before merging', 'Signal right early to show your intention', 'Don\'t stop at the end of the slip road unless you have to'] },
+          { id: '8-2', title: 'Lane Discipline at Speed', duration: '5 min', youtubeId: '', desc: 'The middle lane is one of the most misused lanes on UK roads. This video covers correct lane discipline, when overtaking is appropriate, and how to return to the left lane.', points: ['Keep left unless overtaking — it\'s the law', 'Middle lane hogging: a fixed penalty offence', 'Don\'t overtake on the left (undertake) unless traffic is queuing', 'Match your speed to the flow of traffic in your lane'] },
+          { id: '8-3', title: 'Overtaking Safely on a Dual Carriageway', duration: '5 min', youtubeId: '', desc: 'Overtaking requires a safe speed differential, clear mirrors and a decisive move. This video shows the full process and when not to overtake.', points: ['Check mirrors thoroughly before pulling out', 'Only overtake if you can complete it safely and return to the left', 'Don\'t cut back in too soon — give the overtaken vehicle space', 'Motorways: left lane is normal driving lane — not just for lorries'] },
+          { id: '8-4', title: 'Leaving a Dual Carriageway — Exit Planning', duration: '4 min', youtubeId: '', desc: 'Missing a motorway or dual carriageway exit is stressful. This video covers how to plan your exit, when to move into the left lane and how to use the deceleration lane safely.', points: ['Move to the left lane in good time — not at the last second', 'Watch for the countdown markers: 3, 2, 1 bars', 'Reduce speed on the slip road, not the carriageway', 'Check your speedometer — you may be going faster than you think'] },
+        ]
+      },
+      {
+        num: 9, title: 'Rural & Country Roads',
+        lessons: [
+          { id: '9-1', title: 'Speed Limits on Country Roads', duration: '4 min', youtubeId: '', desc: 'The national speed limit on a single carriageway is 60mph — but that doesn\'t mean 60mph is safe. This video explains appropriate speed for rural conditions.', points: ['60mph is a maximum, not a target', 'Reduce speed for bends, crests and limited visibility', 'Farm entrances and junctions appear with no warning', 'If you can\'t stop in the distance you can see — you\'re going too fast'] },
+          { id: '9-2', title: 'Bends, Crests & Limited Visibility', duration: '5 min', youtubeId: '', desc: 'Rural hazards are less predictable than town hazards. This video covers how to read the road ahead, adjust speed for bends and what to do when visibility drops.', points: ['Position left on right-hand bends to improve sightlines', 'On left-hand bends, hold your normal position — don\'t drift right', 'Crests: treat as a closed junction — you can\'t see what\'s coming', 'Sound the horn on blind bends where visibility is very limited'] },
+          { id: '9-3', title: 'Farm Entrances, Cyclists & Horses', duration: '4 min', youtubeId: '', desc: 'Unpredictable hazards are common on rural roads. This video covers how to approach farm entrances, give room to cyclists and pass horses safely.', points: ['Pass cyclists with at least 1.5m of space — more at speed', 'Horses: slow right down, pass wide, don\'t rev', 'Farm vehicles can appear suddenly from gated entrances', 'Give way to farm machinery — they can\'t move as easily as you'] },
+        ]
+      },
+      {
+        num: 10, title: 'Pedestrian Crossings',
+        lessons: [
+          { id: '10-1', title: 'Zebra Crossings', duration: '4 min', youtubeId: '', desc: 'Zebra crossings are uncontrolled — you must give way once a pedestrian has stepped on. This video covers approach, stopping and the common mistake of waving pedestrians across.', points: ['Give way to pedestrians already on the crossing', 'Approach at a speed where you can stop if needed', 'Don\'t wave pedestrians across — it\'s not your decision', 'Flashing amber beacons: look for pedestrians before passing'] },
+          { id: '10-2', title: 'Light-Controlled Crossings — Pelican, Puffin, Toucan', duration: '5 min', youtubeId: '', desc: 'Different crossing types behave differently. This video explains pelican (flashing amber), puffin (sensors stop signals when clear) and toucan (cyclists too) crossings.', points: ['Pelican: flashing amber = give way to pedestrians already crossing', 'Puffin: no flashing amber — lights stay red until the crossing is clear', 'Toucan: cyclists can also use the crossing', 'Don\'t stop on the crossing itself — stop behind the line'] },
+          { id: '10-3', title: 'School Patrols & Uncontrolled Pedestrians', duration: '3 min', youtubeId: '', desc: 'School crossing patrols have legal authority to stop traffic. Pedestrians also cross outside designated crossings. This video covers how to respond to both.', points: ['Stop for the school patrol lollipop — it\'s a legal requirement', 'Outside school hours: the patrol isn\'t operating — but children still cross', 'At any crossing, be prepared for pedestrians to step out late', 'Never overtake a stopped vehicle near a school crossing'] },
+        ]
+      },
+      {
+        num: 11, title: 'Manoeuvres',
+        lessons: [
+          { id: '11-1', title: 'Parallel Parking — Step by Step', duration: '6 min', youtubeId: '', desc: 'Parallel parking is one of four test manoeuvres you may be asked to do. This video breaks it into clear reference points filmed in the Toyota Aygo X.', points: ['Pull alongside the car in front — about half a metre out', 'Reverse back until your rear is level with their bumper', 'Full lock left — reverse until front is clear of the car ahead', 'Straighten up — you should be within 30cm of the kerb'] },
+          { id: '11-2', title: 'Forward Bay Parking', duration: '5 min', youtubeId: '', desc: 'Driving into a bay requires good slow-speed steering and accurate positioning. This video covers reference points and how to straighten up neatly.', points: ['Choose your bay and position about 1.5 car widths out', 'Turn towards the bay — reference: bay line in driver\'s door mirror', 'Straighten once you can see both bay lines in your mirrors', 'Finish centrally in the bay — not touching the lines'] },
+          { id: '11-3', title: 'Reverse Bay Parking', duration: '6 min', youtubeId: '', desc: 'Reversing into a bay is more controlled than driving in — and commonly tested. This video gives clear reference points for the Toyota Aygo X.', points: ['Drive past the bay to give yourself the right angle', 'Check all mirrors and blind spots before reversing', 'Reference: rear of car aligns with the bay line — then full lock', 'Make small corrections as you go — don\'t wait until it\'s too late'] },
+          { id: '11-4', title: 'Pulling Up on the Right & Reversing Back', duration: '5 min', youtubeId: '', desc: 'This manoeuvre replaced the old turn-in-the-road on most tests. Pull up on the right side of the road, then reverse back two car lengths before moving off again.', points: ['Signal right and check it\'s safe before pulling over', 'Pull up close to the kerb on the right — parallel', 'Reverse back about two car lengths — check mirrors frequently', 'When pulling away: signal right, observe carefully, it\'s a dangerous position'] },
+          { id: '11-5', title: 'Turning in the Road (3-Point Turn)', duration: '5 min', youtubeId: '', desc: 'The 3-point turn may still appear on your test in some situations. This video covers the technique, observations and how to handle tight roads.', points: ['Observations are as important as the steering', 'Steer quickly — the car moves slowly on clutch control', 'If you need more than 3 points: take them — it\'s not a fault', 'Watch for other vehicles — be prepared to stop and wait'] },
+        ]
+      },
+      {
+        num: 12, title: 'Emergency Stop',
+        lessons: [
+          { id: '12-1', title: 'Emergency Stop Technique', duration: '5 min', youtubeId: '', desc: 'One in three tests includes an emergency stop. The examiner will ask you to stop as quickly as possible when they give the signal. This video shows exactly what to do.', points: ['React immediately — don\'t check mirrors first', 'Brake firmly and progressively — apply full pressure', 'Clutch down just before stopping to avoid stalling', 'Keep both hands on the wheel — steer if needed'] },
+          { id: '12-2', title: 'ABS, Skidding & Wet Weather Stops', duration: '4 min', youtubeId: '', desc: 'Modern cars have ABS which prevents wheel lock-up. This video explains how ABS works, what you\'ll feel when it activates, and how stopping distances change in wet and icy conditions.', points: ['ABS: you may feel the pedal pulse — this is normal, keep pressing', 'In the wet: stopping distance at least doubles', 'Ice: stopping distance can be 10x longer than dry', 'Tyres in good condition are the most important safety factor'] },
+        ]
+      },
+      {
+        num: 13, title: 'Independent Driving',
+        lessons: [
+          { id: '13-1', title: 'Following a Sat Nav', duration: '5 min', youtubeId: '', desc: 'Independent driving lasts about 20 minutes of your test. Most examiners use a sat nav. This video covers how to interact with it safely and what happens if you make a wrong turn.', points: ['Wrong turns are not test failures — just follow the sat nav\'s recalculation', 'Glance at the sat nav — don\'t stare at it', 'Listen for instructions and glance just before junctions', 'The examiner sets the sat nav — you don\'t need to touch it'] },
+          { id: '13-2', title: 'Following Road Signs', duration: '4 min', youtubeId: '', desc: 'Some examiners use road signs instead of a sat nav for independent driving. This video explains how to read and follow directional signs confidently.', points: ['Signs appear well before junctions — look ahead for them', 'Follow the signs for your destination — not just the next junction', 'If you miss a sign: take the safest option and explain afterwards', 'Don\'t stop to read a sign — read it as you approach'] },
+          { id: '13-3', title: 'When You Get Lost or Miss a Turn', duration: '3 min', youtubeId: '', desc: 'It happens. Missing a turn during independent driving is not a test failure. This video explains how to recover calmly and what the examiner is actually assessing.', points: ['The examiner is watching how you drive — not where you go', 'If you miss a turn: don\'t panic, don\'t brake suddenly', 'Pull over safely if you need to reorient — that\'s fine', 'Never do a dangerous U-turn to recover a missed turn'] },
+        ]
+      },
+      {
+        num: 14, title: '🗺️ Local Test Routes',
+        lessons: [
+          { id: '14-1', title: 'Peterborough — Routes & Tricky Spots', duration: '8 min', youtubeId: '', desc: 'A full walkthrough of the most common Peterborough driving test routes from Second Drove, Fengate. Filmed on Robert\'s regular teaching roads — you\'ll recognise every junction.', points: ['Eye Roundabout — lane choice and exit approach', 'A1139 Fletton Parkway — merging at speed', 'Fengate industrial area — unmarked junctions', 'Hampton routes — residential speed awareness'] },
+          { id: '14-2', title: 'Peterborough — Top Faults & How to Avoid Them', duration: '6 min', youtubeId: '', desc: 'Based on real test results from Robert\'s pupils over 7+ years. The specific mistakes that fail learners at Peterborough test centres — and how to avoid every one of them.', points: ['Eye Roundabout — cutting across from wrong lane', 'A47 junction — emerging without enough gap', 'Stanground level crossing — stopping position', 'Residential 20mph zones — speed creep'] },
+          { id: '14-3', title: 'Grantham — Layout & Route Overview', duration: '7 min', youtubeId: '', desc: 'Grantham test centre sits at 102 High Dike NG31 7TX. Routes include rural A-roads, village junctions and the A1 dual carriageway. This walkthrough prepares you for everything you\'ll face.', points: ['A1 dual carriageway — joining and leaving', 'Rural single-track lanes around Barrowby', 'Village junctions with limited visibility', 'Speed limit changes between settlements'] },
+          { id: '14-4', title: 'Grantham — Top Faults', duration: '5 min', youtubeId: '', desc: 'The specific spots where Grantham test candidates fail most often. Learn where to slow down, where to position carefully, and what catches people out on rural sections.', points: ['A1 merge — insufficient speed on approach', 'Narrow village roads — road position faults', 'Country road crests — speed management', 'Roundabout on A52 — lane selection'] },
+          { id: '14-5', title: 'Kettering — Layout & Route Overview', duration: '7 min', youtubeId: '', desc: 'Kettering test centre at Orion Way NN15 6NL is open 7 days and often has shorter wait times. Routes cover the Kettering town centre, A14 approaches and surrounding villages.', points: ['Orion Way industrial estate — test centre layout', 'A14 junction — dual carriageway merging', 'Kettering town centre — bus lanes and box junctions', 'Corby Road approaches — national speed limit sections'] },
+          { id: '14-6', title: 'Kettering — Top Faults', duration: '5 min', youtubeId: '', desc: 'The highest-failure junctions and road sections in Kettering — based on Robert\'s knowledge of this test centre. Know these before your test.', points: ['A14 roundabout — lane discipline under pressure', 'Town centre box junctions — entering when exit isn\'t clear', 'Speed limit transitions on Rockingham Road', 'Residential streets — observation at parked car gaps'] },
+        ]
+      },
+      {
+        num: 15, title: 'Your Driving Test',
+        lessons: [
+          { id: '15-1', title: 'What Happens on Test Day — Minute by Minute', duration: '6 min', youtubeId: '', desc: 'A complete walkthrough of test day from arriving at the centre to receiving your result. No surprises, no mysteries — just exactly what to expect.', points: ['Arrive 10 minutes early — check in at reception', 'The examiner introduces themselves and checks your licence', 'Eyesight check in the car park before you drive', 'The test lasts about 40 minutes — then the debrief'] },
+          { id: '15-2', title: 'How Faults Are Marked — Serious, Dangerous, Minor', duration: '5 min', youtubeId: '', desc: 'Understanding how the examiner marks your test removes a lot of anxiety. This video explains the difference between minor, serious and dangerous faults and how many you\'re allowed.', points: ['Minor (driving fault): up to 15 allowed — more than 15 = fail', 'Serious fault: immediate fail — one is enough', 'Dangerous fault: immediate fail — involves actual danger', 'The examiner is looking for safe, competent driving — not perfection'] },
+          { id: '15-3', title: 'Top 10 Reasons Learners Fail Their Test', duration: '7 min', youtubeId: '', desc: 'Based on DVSA data and Robert\'s 7+ years of experience. The ten faults that fail the most learners — and the simple fixes for each one.', points: ['1. Junctions — not stopping when required', '2. Mirrors — not checking before changes of speed or direction', '3. Steering — inconsistent road position', '4. Reversing — poor observations during manoeuvres'] },
+          { id: '15-4', title: 'Managing Test Nerves', duration: '5 min', youtubeId: '', desc: 'Nerves are normal — but they don\'t have to ruin your test. This video gives practical techniques for managing anxiety before and during the test, from breathing exercises to mindset shifts.', points: ['Preparation is the best antidote to nerves', 'Breathe slowly and deliberately — it lowers your heart rate', 'Remember: the examiner wants you to pass', 'Focus on the driving — not on being watched'] },
+          { id: '15-5', title: 'After Your Test — Pass or Fail, What\'s Next', duration: '4 min', youtubeId: '', desc: 'Whether you pass or fail, this video explains what happens next. Collecting your licence, what a pass certificate means, and how to use the debrief constructively if you don\'t pass first time.', points: ['Pass: the examiner takes your provisional, issues a pass certificate', 'You can drive away — but consider accompanying driver for first trips', 'Fail: the debrief is valuable — listen carefully', 'You can rebook immediately — don\'t wait weeks'] },
+        ]
+      },
+    ]
+
+    // ─────────────────────────────────────────────────────────
+    // STATE
+    // ─────────────────────────────────────────────────────────
+    let currentLessonId = null
+    let completedLessons = new Set()
+    let userId = null
+
+    // Flat array of all lessons for prev/next nav
+    const allLessons = COURSE.flatMap(m => m.lessons)
+    const lessonIndex = {}
+    allLessons.forEach((l, i) => { lessonIndex[l.id] = i })
+
+    // ─────────────────────────────────────────────────────────
+    // BOOT
+    // ─────────────────────────────────────────────────────────
+    async function boot() {
+      // Auth guard
+      const { data: { session } } = await sb.auth.getSession()
+      if (!session) { window.location.href = 'login.html'; return }
+      userId = session.user.id
+
+      // Check purchase
+      const { data: purchases } = await sb
+        .from('purchases')
+        .select('course')
+        .eq('user_id', userId)
+        .eq('course', 'manual')
+      if (!purchases || purchases.length === 0) {
+        window.location.href = 'dashboard.html'
+        return
+      }
+
+      // Load progress
+      const { data: progressRows } = await sb
+        .from('progress')
+        .select('lesson_id')
+        .eq('user_id', userId)
+        .eq('course', 'manual')
+      if (progressRows) {
+        progressRows.forEach(r => completedLessons.add(r.lesson_id))
+      }
+
+      // Build sidebar
+      buildSidebar()
+      updateStats()
+
+      // Load lesson from URL hash or first lesson
+      const hash = window.location.hash.replace('#', '')
+      const startId = hash && lessonIndex[hash] !== undefined ? hash : allLessons[0].id
+      loadLesson(startId, false)
+
+      // Hide loading
+      document.getElementById('loading-screen').style.display = 'none'
+    }
+
+    // ─────────────────────────────────────────────────────────
+    // BUILD SIDEBAR
+    // ─────────────────────────────────────────────────────────
+    function buildSidebar() {
+      const container = document.getElementById('sidebar-scroll')
+      container.innerHTML = ''
+
+      COURSE.forEach(mod => {
+        const doneCount = mod.lessons.filter(l => completedLessons.has(l.id)).length
+        const isActive  = mod.lessons.some(l => l.id === currentLessonId)
+        const isOpen    = isActive || doneCount > 0 || mod.num === 1
+
+        const iconClass = doneCount === mod.lessons.length ? 'done'
+                        : doneCount > 0 ? 'partial'
+                        : 'unlocked'
+        const iconContent = doneCount === mod.lessons.length ? '✓' : mod.num
+
+        const group = document.createElement('div')
+        group.className = `mod-group${isOpen ? ' open' : ''}${isActive ? '' : ''}`
+        group.id = `mod-group-${mod.num}`
+
+        group.innerHTML = `
+          <div class="mod-group-header${isActive ? ' has-active' : ''}" onclick="toggleModule(${mod.num})">
+            <div class="mod-icon ${iconClass}">${iconContent}</div>
+            <div class="mod-group-info">
+              <div class="mod-group-name">${mod.title}</div>
+              <div class="mod-group-meta">${doneCount}/${mod.lessons.length} completed</div>
+            </div>
+            <span class="mod-chevron">›</span>
+          </div>
+          <div class="mod-lessons" id="mod-lessons-${mod.num}">
+            ${mod.lessons.map(lesson => renderLessonRow(lesson)).join('')}
+          </div>`
+
+        container.appendChild(group)
+      })
+    }
+
+    function renderLessonRow(lesson) {
+      const isDone    = completedLessons.has(lesson.id)
+      const isCurrent = lesson.id === currentLessonId
+      const checkClass = isDone ? 'done' : isCurrent ? 'current' : 'todo'
+      const checkContent = isDone ? '✓' : isCurrent ? '▶' : ''
+      return `
+        <div class="lesson-row${isCurrent ? ' active' : ''}"
+             id="lesson-row-${lesson.id}"
+             onclick="loadLesson('${lesson.id}', true)">
+          <div class="lesson-check ${checkClass}">${checkContent}</div>
+          <span class="lesson-title-text">${lesson.title}</span>
+          <span class="lesson-duration">${lesson.duration}</span>
+        </div>`
+    }
+
+    // ─────────────────────────────────────────────────────────
+    // LOAD LESSON
+    // ─────────────────────────────────────────────────────────
+    function loadLesson(id, scroll) {
+      const lesson = allLessons.find(l => l.id === id)
+      if (!lesson) return
+      currentLessonId = id
+
+      // Update URL hash
+      history.replaceState(null, '', '#' + id)
+
+      // Find parent module
+      const mod = COURSE.find(m => m.lessons.some(l => l.id === id))
+
+      // Video
+      const ratio = document.getElementById('video-ratio')
+      if (lesson.youtubeId) {
+        // Real video: embed from YouTube
+        ratio.innerHTML = `
+          <iframe
+            src="https://www.youtube.com/embed/${lesson.youtubeId}?rel=0&modestbranding=1"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            title="${lesson.title}">
+          </iframe>`
+      } else {
+        // No video yet: show branded placeholder page
+        // Simply paste the YouTube ID into youtubeId: '' in the COURSE data above
+        // and this iframe will automatically switch to the real video
+        const moduleTitle = `Module ${mod.num} — ${mod.title}`
+        const placeholderParams = new URLSearchParams({
+          title:  lesson.title,
+          module: moduleTitle,
+          course: 'Manual Course'
+        })
+        ratio.innerHTML = `
+          <iframe
+            src="placeholder.html?${placeholderParams.toString()}"
+            title="${lesson.title} — Coming Soon"
+            style="border:none">
+          </iframe>`
+      }
+
+      // Info bar
+      document.getElementById('lesson-breadcrumb').textContent = `Module ${mod.num} — ${mod.title}`
+      document.getElementById('lesson-main-title').textContent = lesson.title
+
+      // Description
+      document.getElementById('lesson-desc').textContent = lesson.desc
+
+      // Key points
+      const kpList = document.getElementById('key-points-list')
+      kpList.innerHTML = lesson.points.map(p =>
+        `<div class="key-point-item"><span class="kp-dot">▸</span> ${p}</div>`
+      ).join('')
+
+      // Complete button state
+      const btn = document.getElementById('btn-complete')
+      if (completedLessons.has(id)) {
+        btn.textContent = '✓ Completed'
+        btn.className = 'btn-lesson-nav completed-btn'
+      } else {
+        btn.textContent = '✓ Mark Complete'
+        btn.className = 'btn-lesson-nav complete-btn'
+      }
+
+      // Prev / Next
+      const idx = lessonIndex[id]
+      document.getElementById('btn-prev').disabled = idx === 0
+      document.getElementById('btn-next').disabled = idx === allLessons.length - 1
+
+      // Up next card
+      const upNextCard  = document.getElementById('up-next-card')
+      const upNextTitle = document.getElementById('up-next-title')
+      if (idx < allLessons.length - 1) {
+        upNextTitle.textContent = allLessons[idx + 1].title
+        upNextCard.style.display = 'flex'
+      } else {
+        upNextCard.style.display = 'none'
+      }
+
+      // Rebuild sidebar to reflect current
+      buildSidebar()
+
+      // Open the right module
+      const groupEl = document.getElementById(`mod-group-${mod.num}`)
+      if (groupEl && !groupEl.classList.contains('open')) {
+        groupEl.classList.add('open')
+      }
+
+      // Scroll sidebar to active lesson
+      if (scroll !== false) {
+        setTimeout(() => {
+          const rowEl = document.getElementById(`lesson-row-${id}`)
+          if (rowEl) rowEl.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
+        }, 100)
+      }
+
+      // Close mobile sidebar
+      if (window.innerWidth <= 768) {
+        document.getElementById('sidebar').classList.remove('open')
+        document.getElementById('sidebar-overlay').classList.remove('visible')
+      }
+    }
+
+    // ─────────────────────────────────────────────────────────
+    // MARK COMPLETE
+    // ─────────────────────────────────────────────────────────
+    async function markComplete() {
+      if (!currentLessonId || completedLessons.has(currentLessonId)) return
+
+      completedLessons.add(currentLessonId)
+
+      // Write to Supabase
+      await sb.from('progress').upsert({
+        user_id:      userId,
+        course:       'manual',
+        lesson_id:    currentLessonId,
+        completed_at: new Date().toISOString()
+      }, { onConflict: 'user_id,course,lesson_id' })
+
+      // Update UI
+      const btn = document.getElementById('btn-complete')
+      btn.textContent = '✓ Completed'
+      btn.className = 'btn-lesson-nav completed-btn'
+
+      updateStats()
+      buildSidebar()
+
+      // Toast
+      showToast('Lesson marked complete!')
+
+      // Auto-advance after short delay
+      setTimeout(() => {
+        const idx = lessonIndex[currentLessonId]
+        if (idx < allLessons.length - 1) navLesson(1)
+      }, 1200)
+    }
+
+    // ─────────────────────────────────────────────────────────
+    // NAVIGATION
+    // ─────────────────────────────────────────────────────────
+    function navLesson(dir) {
+      const idx = lessonIndex[currentLessonId]
+      const next = allLessons[idx + dir]
+      if (next) loadLesson(next.id, true)
+    }
+
+    function toggleModule(num) {
+      const group = document.getElementById(`mod-group-${num}`)
+      group.classList.toggle('open')
+    }
+
+    // ─────────────────────────────────────────────────────────
+    // STATS
+    // ─────────────────────────────────────────────────────────
+    function updateStats() {
+      const done = completedLessons.size
+      const pct  = Math.round((done / allLessons.length) * 100)
+      document.getElementById('stat-done').textContent = done
+      document.getElementById('stat-pct').textContent  = pct + '%'
+      document.getElementById('nav-progress-fill').style.width = pct + '%'
+      document.getElementById('nav-progress-text').textContent = pct + '%'
+    }
+
+    // ─────────────────────────────────────────────────────────
+    // MOBILE SIDEBAR
+    // ─────────────────────────────────────────────────────────
+    function toggleSidebar() {
+      const sidebar  = document.getElementById('sidebar')
+      const overlay  = document.getElementById('sidebar-overlay')
+      const isOpen   = sidebar.classList.contains('open')
+      sidebar.classList.toggle('open')
+      overlay.classList.toggle('visible', !isOpen)
+    }
+
+    // ─────────────────────────────────────────────────────────
+    // TOAST
+    // ─────────────────────────────────────────────────────────
+    function showToast(msg) {
+      const toast = document.getElementById('toast')
+      document.getElementById('toast-text').textContent = msg
+      toast.classList.add('show')
+      setTimeout(() => toast.classList.remove('show'), 2500)
+    }
+
+    // ─────────────────────────────────────────────────────────
+    // SIGN OUT
+    // ─────────────────────────────────────────────────────────
+    async function signOut() {
+      await sb.auth.signOut()
+      window.location.href = 'login.html'
+    }
+
+    // ─────────────────────────────────────────────────────────
+    // BOOT
+    // ─────────────────────────────────────────────────────────
+    boot()
+  </script>
+</body>
+</html>

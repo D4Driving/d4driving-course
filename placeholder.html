@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coming Soon — D4Driving</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --red:   #BD2026;
+      --slate: #2C3E50;
+      --sage:  #8fa3a0;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--slate);
+      color: #fff;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Subtle animated background */
+    .bg-glow {
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 80% 20%, rgba(189,32,38,.18) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 60% at 10% 80%, rgba(143,163,160,.1) 0%, transparent 60%);
+      animation: pulse 6s ease-in-out infinite alternate;
+    }
+    @keyframes pulse {
+      from { opacity: .7; }
+      to   { opacity: 1; }
+    }
+
+    /* Animated grid lines */
+    .grid {
+      position: absolute; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    /* Main card */
+    .card {
+      position: relative; z-index: 1;
+      text-align: center;
+      padding: 2.5rem 2rem;
+      max-width: 500px; width: 100%;
+      display: flex; flex-direction: column; align-items: center; gap: 1.25rem;
+    }
+
+    /* Logo */
+    .logo { height: 36px; filter: brightness(0) invert(1); opacity: .9; }
+
+    /* Play button circle */
+    .play-ring {
+      width: 80px; height: 80px; border-radius: 50%;
+      border: 2.5px solid rgba(189,32,38,.5);
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+      animation: ring-pulse 2.5s ease-in-out infinite;
+    }
+    @keyframes ring-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(189,32,38,.3); }
+      50%       { box-shadow: 0 0 0 14px rgba(189,32,38,.0); }
+    }
+    .play-inner {
+      width: 60px; height: 60px; border-radius: 50%;
+      background: var(--red);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 6px 20px rgba(189,32,38,.4);
+    }
+    .play-icon {
+      width: 0; height: 0;
+      border-top: 11px solid transparent;
+      border-bottom: 11px solid transparent;
+      border-left: 18px solid #fff;
+      margin-left: 3px;
+    }
+
+    /* Module label */
+    .module-label {
+      font-size: .72rem; font-weight: 700; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--sage);
+    }
+
+    /* Lesson title */
+    .lesson-title {
+      font-size: clamp(1rem, 3vw, 1.35rem);
+      font-weight: 800; line-height: 1.25;
+      color: #fff;
+      text-shadow: 0 2px 8px rgba(0,0,0,.3);
+    }
+
+    /* Coming soon badge */
+    .badge {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 100px;
+      padding: .45rem 1rem;
+      font-size: .78rem; font-weight: 700; color: rgba(255,255,255,.7);
+    }
+    .badge-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--red);
+      animation: blink 1.8s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: .3; }
+    }
+
+    /* Sub text */
+    .sub {
+      font-size: .82rem; color: rgba(255,255,255,.45);
+      line-height: 1.6; max-width: 340px;
+    }
+
+    /* Divider */
+    .divider {
+      width: 40px; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--red), transparent);
+      border-radius: 2px;
+    }
+
+    /* Course tag */
+    .course-tag {
+      font-size: .72rem; font-weight: 700;
+      color: rgba(255,255,255,.35);
+      letter-spacing: .06em;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-glow"></div>
+  <div class="grid"></div>
+
+  <div class="card">
+    <img class="logo" src="https://d4driving.co.uk/400dpiLogoCropped.png" alt="D4Driving" />
+
+    <div class="play-ring">
+      <div class="play-inner">
+        <div class="play-icon"></div>
+      </div>
+    </div>
+
+    <div class="module-label" id="module-label">Module —</div>
+    <div class="lesson-title" id="lesson-title">Lesson Title</div>
+
+    <div class="divider"></div>
+
+    <div class="badge">
+      <div class="badge-dot"></div>
+      Video being filmed — coming soon
+    </div>
+
+    <div class="sub">
+      Robert is filming this lesson. It will appear here automatically once uploaded — no action needed on your part.
+    </div>
+
+    <div class="course-tag" id="course-tag">D4Driving Online Course</div>
+  </div>
+
+  <script>
+    // Read lesson info from URL parameters
+    // e.g. placeholder.html?title=Clutch+Control&module=Module+3+%E2%80%94+Gears&course=Manual
+    const params = new URLSearchParams(window.location.search)
+
+    const title  = params.get('title')  || 'Coming Soon'
+    const module = params.get('module') || 'D4Driving Online Course'
+    const course = params.get('course') || 'Manual Course'
+
+    document.getElementById('lesson-title').textContent  = title
+    document.getElementById('module-label').textContent  = module
+    document.getElementById('course-tag').textContent    = `D4Driving ${course}`
+  </script>
+</body>
+</html>

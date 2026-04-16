@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Courses — D4Driving Online Course</title>
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="https://d4driving.co.uk/400dpiLogoCropped.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --red:        #BD2026;
+      --red-dark:   #981a1f;
+      --red-light:  #f5e6e6;
+      --slate:      #2C3E50;
+      --sage:       #8fa3a0;
+      --sage-light: #e8eeee;
+      --bg:         #fbfdff;
+      --white:      #ffffff;
+      --grey-100:   #f4f6f8;
+      --grey-200:   #e8ecf0;
+      --grey-400:   #9aacb8;
+      --grey-600:   #5a6a76;
+      --text:       #1e2c38;
+      --radius:     14px;
+      --radius-lg:  20px;
+      --shadow-sm:  0 2px 8px rgba(44,62,80,.07);
+      --shadow-md:  0 6px 24px rgba(44,62,80,.11);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--grey-100);
+      color: var(--text); min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    .nav {
+      background: var(--slate);
+      padding: 0 1.5rem; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 50;
+    }
+    .nav-logo img { height: 32px; filter: brightness(0) invert(1); }
+    .nav-right { display: flex; align-items: center; gap: 1rem; }
+    .nav-user {
+      display: flex; align-items: center; gap: .6rem;
+      font-size: .84rem; color: rgba(255,255,255,.8);
+    }
+    .nav-avatar {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--red); color: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: .8rem;
+    }
+    .btn-signout {
+      font-size: .78rem; font-weight: 700; color: rgba(255,255,255,.6);
+      background: none; border: 1px solid rgba(255,255,255,.2);
+      padding: .35rem .75rem; border-radius: 6px;
+      cursor: pointer; font-family: inherit;
+      transition: background .2s, color .2s;
+    }
+    .btn-signout:hover { background: rgba(255,255,255,.1); color: var(--white); }
+
+    /* ── LOADING SCREEN ── */
+    #loading-screen {
+      position: fixed; inset: 0;
+      background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 999; flex-direction: column; gap: 1rem;
+    }
+    #loading-screen img { height: 44px; }
+    .loading-bar {
+      width: 180px; height: 3px;
+      background: var(--grey-200); border-radius: 100px; overflow: hidden;
+    }
+    .loading-bar-inner {
+      height: 100%; width: 0; background: var(--red); border-radius: 100px;
+      animation: loadbar 1.2s ease forwards;
+    }
+    @keyframes loadbar { to { width: 100%; } }
+
+    /* ── PAGE LAYOUT ── */
+    .page { max-width: 1060px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+    /* ── WELCOME BANNER ── */
+    .welcome {
+      background: var(--slate);
+      border-radius: var(--radius-lg);
+      padding: 2rem 2.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1.5rem; flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+    .welcome-text {}
+    .welcome-greeting {
+      font-size: .78rem; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--sage); margin-bottom: .4rem;
+    }
+    .welcome-name {
+      font-size: 1.5rem; font-weight: 800; color: var(--white); margin-bottom: .4rem;
+    }
+    .welcome-sub { font-size: .88rem; color: rgba(255,255,255,.65); }
+    .welcome-badge {
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.15);
+      border-radius: var(--radius); padding: 1rem 1.5rem;
+      text-align: center; min-width: 140px; flex-shrink: 0;
+    }
+    .badge-val { font-size: 1.6rem; font-weight: 800; color: var(--white); }
+    .badge-lbl { font-size: .75rem; color: rgba(255,255,255,.6); margin-top: .2rem; }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      font-size: .75rem; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--grey-600);
+      margin-bottom: 1rem; display: block;
+    }
+
+    /* ── COURSE CARDS ── */
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.25rem; margin-bottom: 2.5rem;
+    }
+
+    /* ── OWNED COURSE ── */
+    .course-card {
+      background: var(--white);
+      border: 1.5px solid var(--grey-200);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: transform .2s, box-shadow .2s;
+      display: flex; flex-direction: column;
+    }
+    .course-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+
+    .course-thumb {
+      height: 9px;
+      background: var(--slate);
+    }
+    .course-thumb.manual { background: linear-gradient(90deg, var(--slate), #3d5166); }
+    .course-thumb.automatic { background: linear-gradient(90deg, var(--sage), #6e8a87); }
+
+    .course-body { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; }
+
+    .course-type {
+      display: inline-flex; align-items: center; gap: .35rem;
+      font-size: .72rem; font-weight: 700; letter-spacing: .06em;
+      text-transform: uppercase; padding: .25rem .7rem;
+      border-radius: 100px; margin-bottom: .85rem;
+    }
+    .type-manual   { background: var(--slate); color: var(--white); }
+    .type-automatic { background: var(--sage);  color: var(--white); }
+
+    .course-name {
+      font-size: 1.1rem; font-weight: 800; color: var(--slate); margin-bottom: .3rem;
+    }
+    .course-car {
+      font-size: .8rem; color: var(--grey-400); margin-bottom: 1.1rem;
+    }
+
+    /* Progress bar */
+    .progress-wrap { margin-bottom: 1.1rem; }
+    .progress-label {
+      display: flex; justify-content: space-between;
+      font-size: .78rem; color: var(--grey-600); margin-bottom: .4rem; font-weight: 600;
+    }
+    .progress-bar {
+      height: 7px; background: var(--grey-200); border-radius: 100px; overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; background: var(--red); border-radius: 100px;
+      transition: width .8s ease;
+    }
+
+    .course-meta {
+      display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.25rem;
+    }
+    .meta-item {
+      display: flex; align-items: center; gap: .35rem;
+      font-size: .8rem; color: var(--grey-600);
+    }
+    .meta-item span:first-child { font-size: .9rem; }
+
+    .btn-continue {
+      display: flex; align-items: center; justify-content: center; gap: .4rem;
+      width: 100%; padding: .75rem;
+      background: var(--red); color: var(--white);
+      border: none; border-radius: 10px;
+      font-family: inherit; font-size: .88rem; font-weight: 700;
+      cursor: pointer; text-decoration: none;
+      box-shadow: 0 3px 10px rgba(189,32,38,.25);
+      transition: background .2s, transform .15s;
+      margin-top: auto;
+    }
+    .btn-continue:hover { background: var(--red-dark); transform: translateY(-1px); }
+
+    /* ── LOCKED / BUY COURSE CARD ── */
+    .course-card.locked {
+      border-style: dashed; border-color: var(--grey-200);
+      background: var(--grey-100);
+    }
+    .course-card.locked .course-body { opacity: .8; }
+    .locked-overlay {
+      display: flex; align-items: center; justify-content: center;
+      gap: .5rem; font-size: .95rem; font-weight: 800;
+      color: var(--grey-400); margin-bottom: .75rem;
+    }
+    .btn-buy {
+      display: flex; align-items: center; justify-content: center; gap: .4rem;
+      width: 100%; padding: .75rem;
+      background: var(--white); color: var(--red);
+      border: 2px solid var(--red); border-radius: 10px;
+      font-family: inherit; font-size: .88rem; font-weight: 700;
+      cursor: pointer; text-decoration: none;
+      transition: background .2s, color .2s;
+      margin-top: auto;
+    }
+    .btn-buy:hover { background: var(--red); color: var(--white); }
+
+    /* ── THEORY CARD ── */
+    .theory-card {
+      background: var(--white);
+      border: 1.5px solid var(--grey-200);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem 2rem;
+      box-shadow: var(--shadow-sm);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    .theory-info { display: flex; align-items: center; gap: 1rem; }
+    .theory-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: var(--sage-light); color: var(--sage);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; flex-shrink: 0;
+    }
+    .theory-title { font-size: 1rem; font-weight: 800; color: var(--slate); margin-bottom: .2rem; }
+    .theory-sub { font-size: .82rem; color: var(--grey-600); }
+    .btn-theory {
+      padding: .65rem 1.4rem;
+      background: var(--sage-light); color: var(--slate);
+      border: 1.5px solid var(--sage); border-radius: 10px;
+      font-family: inherit; font-size: .85rem; font-weight: 700;
+      cursor: pointer; white-space: nowrap; text-decoration: none;
+      transition: background .2s;
+    }
+    .btn-theory:hover { background: var(--sage); color: var(--white); }
+
+    /* ── MODULE LIST (quick nav) ── */
+    .module-list {
+      background: var(--white);
+      border: 1.5px solid var(--grey-200);
+      border-radius: var(--radius-lg);
+      overflow: hidden; box-shadow: var(--shadow-sm);
+      margin-bottom: 2.5rem;
+    }
+    .module-list-header {
+      padding: 1.1rem 1.5rem;
+      border-bottom: 1px solid var(--grey-200);
+      font-size: .95rem; font-weight: 800; color: var(--slate);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .module-row {
+      display: flex; align-items: center; gap: 1rem;
+      padding: .9rem 1.5rem;
+      border-bottom: 1px solid var(--grey-100);
+      cursor: pointer; transition: background .15s;
+    }
+    .module-row:last-child { border-bottom: none; }
+    .module-row:hover { background: var(--grey-100); }
+    .module-row.locked-row { opacity: .5; cursor: default; }
+    .module-row.locked-row:hover { background: transparent; }
+    .mod-num {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--grey-100); color: var(--grey-600);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .72rem; font-weight: 800; flex-shrink: 0;
+    }
+    .mod-num.done { background: var(--red); color: var(--white); }
+    .mod-title { font-size: .88rem; font-weight: 600; color: var(--slate); flex: 1; }
+    .mod-count { font-size: .76rem; color: var(--grey-400); }
+    .mod-status { font-size: .78rem; font-weight: 700; }
+    .mod-status.complete { color: #16a34a; }
+    .mod-status.inprogress { color: var(--red); }
+    .mod-status.locked { color: var(--grey-400); }
+
+    /* ── ACCESS EXPIRY ── */
+    .expiry-bar {
+      background: var(--white);
+      border: 1.5px solid var(--grey-200);
+      border-radius: var(--radius);
+      padding: 1rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: .75rem;
+      font-size: .84rem;
+    }
+    .expiry-info { display: flex; align-items: center; gap: .6rem; color: var(--grey-600); }
+    .expiry-info strong { color: var(--slate); }
+    .expiry-ok   { color: #16a34a; font-weight: 700; font-size: .82rem; }
+
+    /* ── EMPTY STATE ── */
+    .empty-state {
+      text-align: center; padding: 3rem 1.5rem;
+      background: var(--white); border-radius: var(--radius-lg);
+      border: 1.5px solid var(--grey-200);
+    }
+    .empty-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .empty-title { font-size: 1.1rem; font-weight: 800; color: var(--slate); margin-bottom: .5rem; }
+    .empty-sub { font-size: .88rem; color: var(--grey-600); margin-bottom: 1.5rem; max-width: 380px; margin-left: auto; margin-right: auto; }
+    .btn-browse {
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .75rem 1.75rem;
+      background: var(--red); color: var(--white); border-radius: 10px;
+      font-weight: 700; font-size: .9rem; text-decoration: none;
+      box-shadow: 0 4px 14px rgba(189,32,38,.28);
+      transition: background .2s;
+    }
+    .btn-browse:hover { background: var(--red-dark); }
+
+    @media(max-width: 600px) {
+      .welcome { padding: 1.5rem; }
+      .page { padding: 1.25rem 1rem 3rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── LOADING SCREEN ── -->
+  <div id="loading-screen">
+    <img src="https://d4driving.co.uk/400dpiLogoCropped.png" alt="D4Driving" />
+    <div class="loading-bar"><div class="loading-bar-inner"></div></div>
+  </div>
+
+  <!-- ── NAV ── -->
+  <nav class="nav">
+    <a href="index.html">
+      <img src="https://d4driving.co.uk/400dpiLogoCropped.png" alt="D4Driving" style="height:32px;filter:brightness(0) invert(1)" />
+    </a>
+    <div class="nav-right">
+      <div class="nav-user">
+        <div class="nav-avatar" id="nav-avatar">?</div>
+        <span id="nav-name">Loading…</span>
+      </div>
+      <button class="btn-signout" onclick="signOut()">Sign Out</button>
+    </div>
+  </nav>
+
+  <!-- ── MAIN ── -->
+  <div class="page" id="page-content" style="display:none">
+
+    <!-- Welcome banner -->
+    <div class="welcome">
+      <div class="welcome-text">
+        <div class="welcome-greeting">D4Driving Online Course</div>
+        <div class="welcome-name" id="welcome-name">Welcome back!</div>
+        <div class="welcome-sub" id="welcome-sub">Your courses and progress are below.</div>
+      </div>
+      <div class="welcome-badge">
+        <div class="badge-val" id="badge-progress">0%</div>
+        <div class="badge-lbl">Overall Progress</div>
+      </div>
+    </div>
+
+    <!-- My Courses -->
+    <span class="section-label">My Courses</span>
+    <div class="courses-grid" id="courses-grid">
+      <!-- Populated by JS -->
+    </div>
+
+    <!-- Theory Bundle -->
+    <span class="section-label">Theory Bundle — Included Free</span>
+    <div class="theory-card">
+      <div class="theory-info">
+        <div class="theory-icon">📋</div>
+        <div>
+          <div class="theory-title">Theory &amp; Hazard Perception</div>
+          <div class="theory-sub">700+ questions · 30+ hazard clips · 100+ road sign flashcards</div>
+        </div>
+      </div>
+      <a class="btn-theory" href="https://www.dtsanytime.co.uk/login.aspx?Reseller=934" target="_blank">
+        Open Theory App →
+      </a>
+    </div>
+
+    <!-- Module Quick Nav (shown when a course is owned) -->
+    <div id="module-section" style="display:none">
+      <span class="section-label" id="module-section-label">Course Modules</span>
+      <div class="module-list">
+        <div class="module-list-header">
+          <span id="module-list-title">Modules</span>
+          <span style="font-size:.78rem;color:var(--grey-400);font-weight:400" id="module-list-count"></span>
+        </div>
+        <div id="module-rows"><!-- Populated by JS --></div>
+      </div>
+    </div>
+
+    <!-- Access expiry -->
+    <div class="expiry-bar" id="expiry-bar" style="display:none">
+      <div class="expiry-info">📅 &nbsp;Course access expires: <strong id="expiry-date">—</strong></div>
+      <span class="expiry-ok" id="expiry-ok">✅ Active</span>
+    </div>
+
+  </div><!-- /page -->
+
+  <!-- ── SUPABASE SDK ── -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+  <script>
+    // ─────────────────────────────────────────────────────────
+    // ⚠️  REPLACE THESE TWO VALUES after completing Supabase setup Step 2
+    // ─────────────────────────────────────────────────────────
+    const SUPABASE_URL  = 'YOUR_SUPABASE_URL'
+    const SUPABASE_ANON = 'YOUR_SUPABASE_ANON_KEY'
+    // ─────────────────────────────────────────────────────────
+
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON)
+
+    // ── All 15 modules (shared by both courses — manual has extra gear videos)
+    const MODULES = [
+      { num: 1,  title: 'Before You Get Moving',             videos: 5  },
+      { num: 2,  title: 'First Moves',                       videos: 6  },
+      { num: 3,  title: 'Gears & Speed Control',             videos: 5  }, // 2 for auto
+      { num: 4,  title: 'The MSM Routine',                   videos: 3  },
+      { num: 5,  title: 'Junctions',                         videos: 7  },
+      { num: 6,  title: 'Roundabouts',                       videos: 5  },
+      { num: 7,  title: 'Town Driving',                      videos: 4  },
+      { num: 8,  title: 'Dual Carriageways',                 videos: 4  },
+      { num: 9,  title: 'Rural & Country Roads',             videos: 3  },
+      { num: 10, title: 'Pedestrian Crossings',              videos: 3  },
+      { num: 11, title: 'Manoeuvres',                        videos: 5  },
+      { num: 12, title: 'Emergency Stop',                    videos: 2  },
+      { num: 13, title: 'Independent Driving',               videos: 3  },
+      { num: 14, title: '🗺️ Local Test Routes',              videos: 6  },
+      { num: 15, title: 'Your Driving Test',                 videos: 5  },
+    ]
+
+    // ── Course definitions
+    const COURSES = {
+      manual: {
+        name:    'Manual Course',
+        car:     'Toyota Aygo X',
+        type:    'manual',
+        videos:  66,
+        href:    'course-manual.html',
+        stripeLink: 'https://buy.stripe.com/MANUAL_LINK' // ← replace with real Stripe link
+      },
+      automatic: {
+        name:    'Automatic Course',
+        car:     'Toyota Yaris Cross',
+        type:    'automatic',
+        videos:  62,
+        href:    'course-automatic.html',
+        stripeLink: 'https://buy.stripe.com/AUTOMATIC_LINK' // ← replace with real Stripe link
+      }
+    }
+
+    // ── Boot: check auth, load purchases
+    async function boot() {
+      const { data: { session } } = await sb.auth.getSession()
+
+      if (!session) {
+        window.location.href = 'login.html'
+        return
+      }
+
+      const user = session.user
+      const name = user.user_metadata?.full_name || user.email.split('@')[0]
+
+      // Update nav
+      document.getElementById('nav-name').textContent = name
+      document.getElementById('nav-avatar').textContent = name.charAt(0).toUpperCase()
+
+      // Update welcome
+      document.getElementById('welcome-name').textContent = `Welcome back, ${name.split(' ')[0]}!`
+
+      // Load purchases
+      const { data: purchases, error } = await sb
+        .from('purchases')
+        .select('*')
+        .eq('user_id', user.id)
+
+      if (error) console.error('Error loading purchases:', error)
+
+      const owned = new Set((purchases || []).map(p => p.course))
+
+      renderDashboard(owned, purchases || [])
+
+      // Hide loading, show page
+      document.getElementById('loading-screen').style.display = 'none'
+      document.getElementById('page-content').style.display = 'block'
+    }
+
+    // ── Render dashboard
+    function renderDashboard(owned, purchases) {
+      const grid = document.getElementById('courses-grid')
+      grid.innerHTML = ''
+
+      let totalVideos = 0
+      let totalWatched = 0 // placeholder — will come from progress table in next phase
+
+      // Show both courses — owned or locked
+      Object.entries(COURSES).forEach(([key, course]) => {
+        const isOwned = owned.has(key)
+        const purchase = purchases.find(p => p.course === key)
+        const watched = 0 // placeholder
+        const pct = isOwned ? Math.round((watched / course.videos) * 100) : 0
+
+        if (isOwned) {
+          totalVideos  += course.videos
+          totalWatched += watched
+        }
+
+        grid.innerHTML += renderCourseCard(key, course, isOwned, pct, purchase)
+      })
+
+      // Overall progress badge
+      const overall = totalVideos > 0 ? Math.round((totalWatched / totalVideos) * 100) : 0
+      document.getElementById('badge-progress').textContent = overall + '%'
+      document.getElementById('welcome-sub').textContent =
+        owned.size > 0
+          ? `You have ${owned.size} course${owned.size > 1 ? 's' : ''} — keep going!`
+          : 'Purchase a course below to get started.'
+
+      // Module quick nav — show for the first owned course
+      const firstOwned = ['manual', 'automatic'].find(k => owned.has(k))
+      if (firstOwned) {
+        renderModuleList(firstOwned, purchases)
+      }
+
+      // Access expiry
+      if (purchases.length > 0) {
+        const earliest = purchases.reduce((a, b) =>
+          new Date(a.expires_at) < new Date(b.expires_at) ? a : b)
+        if (earliest.expires_at) {
+          const d = new Date(earliest.expires_at)
+          document.getElementById('expiry-date').textContent = d.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' })
+          document.getElementById('expiry-bar').style.display = 'flex'
+        }
+      }
+
+      // Empty state
+      if (owned.size === 0) {
+        // Cards still show as locked — that is the empty state prompt
+      }
+    }
+
+    function renderCourseCard(key, course, isOwned, pct, purchase) {
+      if (isOwned) {
+        return `
+          <div class="course-card">
+            <div class="course-thumb ${course.type}"></div>
+            <div class="course-body">
+              <span class="course-type type-${course.type}">${course.type === 'manual' ? '🚗' : '⚡'} ${course.type.charAt(0).toUpperCase() + course.type.slice(1)}</span>
+              <div class="course-name">${course.name}</div>
+              <div class="course-car">${course.car}</div>
+              <div class="progress-wrap">
+                <div class="progress-label">
+                  <span>Progress</span>
+                  <span>${pct}%</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width:${pct}%"></div>
+                </div>
+              </div>
+              <div class="course-meta">
+                <div class="meta-item"><span>🎬</span><span>${course.videos} videos</span></div>
+                <div class="meta-item"><span>📅</span><span>12 months access</span></div>
+              </div>
+              <a class="btn-continue" href="${course.href}">
+                ${pct > 0 ? '▶ Continue' : '▶ Start Course'} →
+              </a>
+            </div>
+          </div>`
+      } else {
+        return `
+          <div class="course-card locked">
+            <div class="course-thumb ${course.type}" style="opacity:.4"></div>
+            <div class="course-body">
+              <div class="locked-overlay">🔒 Not purchased</div>
+              <div class="course-name" style="color:var(--grey-600)">${course.name}</div>
+              <div class="course-car">${course.car}</div>
+              <div class="course-meta">
+                <div class="meta-item"><span>🎬</span><span>${course.videos} videos</span></div>
+                <div class="meta-item"><span>💷</span><span>£39 one-time</span></div>
+              </div>
+              <a class="btn-buy" href="${course.stripeLink}?client_reference_id=USER_ID_PLACEHOLDER">
+                🛒 Buy This Course — £39
+              </a>
+            </div>
+          </div>`
+      }
+    }
+
+    // ── Module quick nav
+    function renderModuleList(courseKey, purchases) {
+      const course = COURSES[courseKey]
+      document.getElementById('module-section').style.display = 'block'
+      document.getElementById('module-section-label').textContent = `${course.name} — Module Overview`
+      document.getElementById('module-list-title').textContent = course.name
+      document.getElementById('module-list-count').textContent = '15 modules'
+
+      // In this phase, modules 1–3 are "unlocked" as a demo; rest locked pending video upload
+      // When course-manual.html is built, this will track real progress
+      const rows = document.getElementById('module-rows')
+      rows.innerHTML = ''
+
+      MODULES.forEach((mod, i) => {
+        // Placeholder: first 3 modules appear unlocked, rest locked until videos added
+        const status = i < 3 ? 'inprogress' : 'locked'
+        const statusLabel = status === 'inprogress' ? 'Available' : 'Coming soon'
+        const isLocked = status === 'locked'
+
+        rows.innerHTML += `
+          <div class="module-row ${isLocked ? 'locked-row' : ''}"
+               onclick="${!isLocked ? `window.location.href='${course.href}#module-${mod.num}'` : ''}">
+            <div class="mod-num ${status === 'complete' ? 'done' : ''}">${mod.num}</div>
+            <div class="mod-title">${mod.title}</div>
+            <div class="mod-count">${mod.videos} videos</div>
+            <div class="mod-status ${status}">${statusLabel}</div>
+          </div>`
+      })
+    }
+
+    // ── Sign out
+    async function signOut() {
+      await sb.auth.signOut()
+      window.location.href = 'login.html'
+    }
+
+    // ── Boot on load
+    boot()
+  </script>
+</body>
+</html>
