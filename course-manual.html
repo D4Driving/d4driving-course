@@ -486,8 +486,8 @@
     // ─────────────────────────────────────────────────────────
     // ⚠️  REPLACE THESE TWO VALUES (same as login.html / dashboard.html)
     // ─────────────────────────────────────────────────────────
-    const SUPABASE_URL  = 'https://jktavfjgzfzxlfnlkzfa.supabase.co'
-    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImprdGF2ZmpnemZ6eGxmbmxremZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzNDA2OTYsImV4cCI6MjA5MTkxNjY5Nn0.cfmekfMgovx4e2kdLll75JU-T6RhlUbA0zyWXmZPAS0'
+    const SUPABASE_URL  = 'YOUR_SUPABASE_URL'
+    const SUPABASE_ANON = 'YOUR_SUPABASE_ANON_KEY'
     // ─────────────────────────────────────────────────────────
 
     const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON)
@@ -509,7 +509,7 @@
         lessons: [
           {
             id: '1-1', title: 'The Cockpit Drill (DSSSM)', duration: '4 min',
-            youtubeId: '',
+            youtubeId: 'ld17E5LpDKU',
             desc: 'Before every drive, a proper cockpit drill keeps you safe and sets you up for a good lesson. This video walks through the full DSSSM routine — Doors, Seat, Steering, Seatbelt, Mirrors — step by step.',
             points: ['Always do the cockpit drill before moving off', 'Adjust seat so you can fully depress the clutch with a slight knee bend', 'Mirrors should show a small amount of the car\'s bodywork', 'Headrests should align with the top of your head']
           },
